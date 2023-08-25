@@ -118,14 +118,52 @@ export default function Input(props: AppProps) {
       )}
     </div>
   ) : props.type === "select" ? (
-    <div className="form-group">
-      <label for="exampleFormControlSelect1">Example select</label>
-      <select className="form-control" id={props.id}>
-        {props.data?.map((item) => (
-          <option>{item}</option>
-        ))}
-      </select>
-    </div>
+    <>
+      <div style={{ position: "relative" }} class={"mb-3"}>
+        {props.label ? (
+          <div className={props.labelClass}>
+            <label for={`${props.id}`}>{props.label}</label>
+          </div>
+        ) : (
+          <></>
+        )}
+        <div className="input-group">
+          {props.iconBefore ? (
+            <>
+              <div className="input-group-prepend">
+                <span className="input-group-text">
+                  <I c={props.iconBefore} />
+                </span>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+
+          <select
+            className="form-control"
+            id={props.id}
+            placeholder={props.placeholder}
+          >
+            {props.data?.map((item) => (
+              <option>{item}</option>
+            ))}
+          </select>
+
+          {props.iconAfter ? (
+            <>
+              <div className="input-group-append">
+                <span className="input-group-text">
+                  <I c={props.iconAfter} />
+                </span>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+        </div>
+      </div>
+    </>
   ) : (
     <></>
   );
