@@ -53,6 +53,7 @@ export default function Input(props: AppProps) {
               } else {
                 setValue("");
               }
+              setFilteredData([]);
             }
           }}
           onChange={(e) => {
