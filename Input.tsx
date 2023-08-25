@@ -36,11 +36,11 @@ export default function Input(props: AppProps) {
       ) : (
         <></>
       )}
-      <div class="input-group">
+      <div className="input-group">
         {props.iconBefore ? (
           <>
-            <div class="input-group-prepend">
-              <span class="input-group-text">
+            <div className="input-group-prepend">
+              <span className="input-group-text">
                 <I c={props.iconBefore} />
               </span>
             </div>
@@ -51,7 +51,7 @@ export default function Input(props: AppProps) {
 
         <input
           type={props.type}
-          class="form-control"
+          className="form-control"
           placeholder={props.placeholder}
           autocomplete={"off"}
           id={props.id}
@@ -73,16 +73,19 @@ export default function Input(props: AppProps) {
         />
         {props.type === "password" ? (
           <>
-            <div class="input-group-append">
-              <span class="input-group-text">
-                <i onClick={showPassword} className={`bi-eye-fill`}></i>
+            <div
+              className="input-group-append showPasswordWrapper"
+              onClick={showPassword}
+            >
+              <span className="input-group-text">
+                <i className={`bi-eye-fill`}></i>
               </span>
             </div>
           </>
         ) : props.iconAfter ? (
           <>
-            <div class="input-group-append">
-              <span class="input-group-text">
+            <div className="input-group-append">
+              <span className="input-group-text">
                 <I c={props.iconAfter} />
               </span>
             </div>
@@ -115,9 +118,9 @@ export default function Input(props: AppProps) {
       )}
     </div>
   ) : props.type === "select" ? (
-    <div class="form-group">
+    <div className="form-group">
       <label for="exampleFormControlSelect1">Example select</label>
-      <select class="form-control" id={props.id}>
+      <select className="form-control" id={props.id}>
         {props.data?.map((item) => (
           <option>{item}</option>
         ))}
