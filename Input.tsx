@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { icons } from "./Types";
 import "./Input.scss";
+import I from "./I";
 
 type AppProps = {
-  type: "text" | "select";
+  type: "text" | "select" | "password";
   id: string;
   label?: string;
   labelClass?: string;
@@ -17,7 +18,16 @@ export default function Input(props: AppProps) {
   const [filteredData, setFilteredData] = useState<string[]>([]);
   const [value, setValue] = useState("");
 
-  return props.type === "text" ? (
+  function showPassword() {
+    const input = document.getElementById(props.id) as HTMLInputElement;
+    if (input.type === "password") {
+      input.type = "text";
+    } else {
+      input.type = "password";
+    }
+  }
+
+  return props.type === "text" || props.type === "password" ? (
     <div style={{ position: "relative" }} class={"mb-3"}>
       {props.label ? (
         <div className={props.labelClass}>
@@ -31,7 +41,7 @@ export default function Input(props: AppProps) {
           <>
             <div class="input-group-prepend">
               <span class="input-group-text">
-                <i className={`bi-${props.iconBefore}`}></i>
+                <I c={props.iconBefore} />
               </span>
             </div>
           </>
@@ -40,7 +50,7 @@ export default function Input(props: AppProps) {
         )}
 
         <input
-          type="text"
+          type={props.type}
           class="form-control"
           placeholder={props.placeholder}
           autocomplete={"off"}
@@ -61,11 +71,19 @@ export default function Input(props: AppProps) {
             }
           }}
         />
-        {props.iconAfter ? (
+        {props.type === "password" ? (
           <>
             <div class="input-group-append">
               <span class="input-group-text">
-                <i className={`bi-${props.iconAfter}`}></i>
+                <i onClick={showPassword} className={`bi-eye-fill`}></i>
+              </span>
+            </div>
+          </>
+        ) : props.iconAfter ? (
+          <>
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <I c={props.iconAfter} />
               </span>
             </div>
           </>
@@ -73,7 +91,7 @@ export default function Input(props: AppProps) {
           <></>
         )}
       </div>
-      {filteredData.length > 0 ? (
+      {filteredData && filteredData.length > 0 ? (
         <>
           <div
             className={"bg-light w-100 border"}
