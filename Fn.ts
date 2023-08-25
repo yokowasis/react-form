@@ -87,3 +87,15 @@ export function getStorageVar(key: string) {
   const s = decrypted.toString(enc.Utf8);
   return JSON.parse(s);
 }
+
+export async function imgURLtoBase64(url: string): Promise<string> {
+  const res = await fetch(url);
+  const blob = await res.blob();
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = () => {
+      resolve(reader.result as any as string);
+    };
+  });
+}
