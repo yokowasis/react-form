@@ -1,3 +1,6 @@
+import { AES, enc } from "crypto-js";
+const PUBLIC_LOCAL_KEY = "123123";
+
 export function getVal(id: string) {
   if (typeof document === "undefined" || typeof window === "undefined")
     return "";
@@ -49,4 +52,38 @@ export function slugify(text: string) {
     .replace(/--+/g, "-") // Replace multiple - with single -
     .replace(/^-+/, "") // Trim - from start of text
     .replace(/-+$/, ""); // Trim - from end of text
+}
+
+export function capitalize(str: string) {
+  if (str) {
+    str = str.replace(/_/g, " ");
+    return str
+      .split(" ")
+      .map((word) => word[0].toUpperCase() + word.slice(1))
+      .join(" ");
+  } else return "";
+}
+
+export function digitGrouping(num: number) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+export function paddingZero(num: number, size: number = 2) {
+  let s = num + "";
+  while (s.length < size) s = "0" + s;
+  return s;
+}
+
+export function setStorageVar(key: string, val: any) {
+  const s = AES.encrypt(JSON.stringify(val), PUBLIC_LOCAL_KEY);
+  localStorage.setItem(key, s.toString());
+}
+
+export function getStorageVar(key: string) {
+  const item = localStorage.getItem(key);
+  if (!item) return undefined;
+  const encrypted = item;
+  const decrypted = AES.decrypt(encrypted, PUBLIC_LOCAL_KEY);
+  const s = decrypted.toString(enc.Utf8);
+  return JSON.parse(s);
 }
