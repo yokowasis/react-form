@@ -43,19 +43,9 @@ export default function Input(props: AppProps) {
           type="text"
           class="form-control"
           placeholder={props.placeholder}
+          autocomplete={"off"}
           id={props.id}
           value={value}
-          onfocusout={() => {
-            if (props.data?.length) {
-              // make sure value is in props.data
-              if (props.data.includes(value)) {
-                setValue(value);
-              } else {
-                setValue("");
-              }
-              setFilteredData([]);
-            }
-          }}
           onChange={(e) => {
             const target = e.target as any as { value: string };
             const val = target.value as string;
