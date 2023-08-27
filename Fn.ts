@@ -115,3 +115,49 @@ export async function imgURLtoBase64(url: string): Promise<string> {
     };
   });
 }
+
+export function convertImgSrcToBase64(htmlString: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = htmlString;
+    const imgElements = tempDiv.querySelectorAll("img");
+
+    if (imgElements.length === 0) {
+      resolve(htmlString);
+      return;
+    }
+
+    let loadedCount = 0;
+    const loadHandler = () => {
+      loadedCount++;
+      if (loadedCount === imgElements.length) {
+        resolve(tempDiv.innerHTML);
+      }
+    };
+
+    for (let i = 0; i < imgElements.length; i++) {
+      const imgElement = imgElements[i];
+      const imgUrl = imgElement.getAttribute("src") || "";
+      fetch(imgUrl)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(blob);
+          reader.onloadend = () => {
+            const base64String: string = (reader as any).result.replace(
+              /^data:.+;base64,/,
+              ""
+            );
+            imgElement.setAttribute(
+              "src",
+              `data:image/png;base64,${base64String}`
+            );
+            loadHandler();
+          };
+        })
+        .catch(() => {
+          reject(new Error(`Failed to load image: ${imgUrl}`));
+        });
+    }
+  });
+}
