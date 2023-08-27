@@ -197,3 +197,22 @@ export function convertImgSrcToBase64(htmlString: string): Promise<string> {
     }
   });
 }
+
+export function rp(url: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    fetch(url, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
