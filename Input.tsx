@@ -4,14 +4,16 @@ import "./Input.scss";
 import I from "./I";
 
 type AppProps = {
-  type: "text" | "select" | "password";
+  type: "text" | "select" | "password" | "checkbox";
   id: string;
   label?: string;
   labelClass?: string;
   placeholder?: string;
   iconAfter?: icons;
   iconBefore?: icons;
+  checked?: boolean;
   data?: string[];
+  onChange?: (e: any) => void;
 };
 
 export default function Input(props: AppProps) {
@@ -117,6 +119,28 @@ export default function Input(props: AppProps) {
         <></>
       )}
     </div>
+  ) : props.type === "checkbox" ? (
+    <>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value=""
+          id={props.id}
+          checked={props.checked}
+          onChange={props.onChange}
+        />
+        {props.label ? (
+          <>
+            <label class="form-check-label" for={props.id}>
+              {props.label}
+            </label>
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
+    </>
   ) : props.type === "select" ? (
     <>
       <div style={{ position: "relative" }} class={"mb-3"}>
