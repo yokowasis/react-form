@@ -1,4 +1,5 @@
 import { AES, enc } from "crypto-js";
+import bcrypt from "bcryptjs";
 const PUBLIC_LOCAL_KEY = "123123";
 
 export function getVal(id: string) {
@@ -12,6 +13,41 @@ export function getVal(id: string) {
       return (elem as HTMLInputElement).value;
       break;
   }
+}
+
+export function generateSalt() {
+  return bcrypt.genSaltSync(10);
+}
+
+export function getToken(salt = "$2a$10$us4l1evreCGvANr2QiCz8O") {
+  // create a function to hash password using salt
+  // import bcrypt
+
+  const hashPassword = (password: string) => {
+    // const salt = bcrypt.genSaltSync(10);
+    return bcrypt.hashSync(password, salt);
+  };
+
+  // get current date and time
+  let now = new Date();
+
+  // set timezone to Central Indonesia Time (UTC+8)
+  now.setUTCHours(now.getUTCHours() + 8);
+
+  // round down to the nearest 15-minute interval
+  let roundedMinutes = Math.floor(now.getUTCMinutes() / 15) * 15;
+  now.setUTCMinutes(roundedMinutes);
+  now.setUTCSeconds(0);
+  now.setUTCMilliseconds(0);
+
+  // print in ISO format
+  const rounded = now.toISOString();
+
+  const hash = hashPassword(rounded);
+
+  // get last 5 characters of hash, and make it uppercase
+  const last5 = hash.slice(-5).toUpperCase();
+  return last5;
 }
 
 export function setVal(id: string, value: string) {
