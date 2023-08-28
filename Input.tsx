@@ -2,9 +2,10 @@ import { useState } from "react";
 import { icons } from "./Types";
 import "./Input.scss";
 import I from "./I";
+import { slugify } from "./Fn";
 
 type AppProps = {
-  type: "text" | "select" | "password" | "checkbox";
+  type: "text" | "select" | "password" | "checkbox" | "textarea" | "radio";
   id: string;
   label?: string;
   labelClass?: string;
@@ -13,6 +14,8 @@ type AppProps = {
   iconBefore?: icons;
   checked?: boolean;
   data?: string[];
+  rows?: number;
+  value?: string;
   onChange?: (e: any) => void;
 };
 
@@ -118,6 +121,51 @@ export default function Input(props: AppProps) {
       ) : (
         <></>
       )}
+    </div>
+  ) : props.type === "radio" ? (
+    <div className={"mb-3"}>
+      {props.label ? (
+        <>
+          <div className={"mb-1"}>{props.label}</div>
+        </>
+      ) : (
+        <></>
+      )}
+      {props.data?.map((item) => (
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name={props.id}
+            id={`radio-${props.id}-${slugify(item)}`}
+            value={item}
+            checked={props.value === item}
+          />
+          <label
+            class="form-check-label"
+            for={`radio-${props.id}-${slugify(item)}`}
+          >
+            {item}
+          </label>
+        </div>
+      ))}
+    </div>
+  ) : props.type === "textarea" ? (
+    <div className={"mb-3"}>
+      <div class="form-group">
+        {props.label ? (
+          <>
+            <label for={props.id}>{props.label}</label>
+          </>
+        ) : (
+          <></>
+        )}
+        <textarea
+          class="form-control"
+          id={props.id}
+          rows={props.rows || 3}
+        ></textarea>
+      </div>
     </div>
   ) : props.type === "checkbox" ? (
     <>
