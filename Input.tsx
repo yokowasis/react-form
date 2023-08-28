@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { icons } from "./Types";
 import "./Input.scss";
 import I from "./I";
-import { setVal, slugify } from "./Fn";
+import { slugify } from "./Fn";
 
 type AppProps = {
   type: "text" | "select" | "password" | "checkbox" | "textarea" | "radio";
@@ -16,6 +16,8 @@ type AppProps = {
   data?: string[];
   rows?: number;
   value?: string;
+  style?: React.CSSProperties;
+  onBlur?: (e: any) => void;
   onChange?: (e: any) => void;
 };
 
@@ -59,12 +61,14 @@ export default function Input(props: AppProps) {
         )}
 
         <input
+          style={{ ...props.style }}
           type={props.type}
           className="form-control"
           placeholder={props.placeholder}
           autocomplete={"off"}
           id={props.id}
           value={value}
+          onBlur={props.onBlur}
           onChange={(e) => {
             const target = e.target as any as { value: string };
             const val = target.value as string;
@@ -166,7 +170,13 @@ export default function Input(props: AppProps) {
         ) : (
           <></>
         )}
-        <textarea class="form-control" id={props.id} rows={props.rows || 3}>
+        <textarea
+          onBlur={props.onBlur}
+          class="form-control"
+          id={props.id}
+          rows={props.rows || 3}
+          style={{ ...props.style }}
+        >
           {props.value}
         </textarea>
       </div>
