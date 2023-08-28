@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { icons } from "./Types";
 import "./Input.scss";
 import I from "./I";
-import { slugify } from "./Fn";
+import { setVal, slugify } from "./Fn";
 
 type AppProps = {
   type: "text" | "select" | "password" | "checkbox" | "textarea" | "radio";
@@ -31,6 +31,10 @@ export default function Input(props: AppProps) {
       input.type = "password";
     }
   }
+
+  useEffect(() => {
+    setValue(props.value || "");
+  }, []);
 
   return props.type === "text" || props.type === "password" ? (
     <div style={{ position: "relative" }} class={"mb-3"}>
@@ -123,7 +127,7 @@ export default function Input(props: AppProps) {
       )}
     </div>
   ) : props.type === "radio" ? (
-    <div className={"mb-3"}>
+    <div className={"form-group"}>
       {props.label ? (
         <>
           <div className={"mb-1"}>{props.label}</div>
@@ -151,20 +155,20 @@ export default function Input(props: AppProps) {
       ))}
     </div>
   ) : props.type === "textarea" ? (
-    <div className={"mb-3"}>
+    <div>
       <div class="form-group">
         {props.label ? (
           <>
-            <label for={props.id}>{props.label}</label>
+            <label className={"mb-1"} for={props.id}>
+              {props.label}
+            </label>
           </>
         ) : (
           <></>
         )}
-        <textarea
-          class="form-control"
-          id={props.id}
-          rows={props.rows || 3}
-        ></textarea>
+        <textarea class="form-control" id={props.id} rows={props.rows || 3}>
+          {props.value}
+        </textarea>
       </div>
     </div>
   ) : props.type === "checkbox" ? (
