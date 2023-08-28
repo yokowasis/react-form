@@ -12,7 +12,7 @@ type AppProps = {
   placeholder?: string;
   iconAfter?: icons;
   iconBefore?: icons;
-  checked?: boolean;
+  checked?: string[];
   data?: string[];
   rows?: number;
   value?: string;
@@ -168,27 +168,33 @@ export default function Input(props: AppProps) {
       </div>
     </div>
   ) : props.type === "checkbox" ? (
-    <>
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          value=""
-          id={props.id}
-          checked={props.checked}
-          onChange={props.onChange}
-        />
-        {props.label ? (
-          <>
-            <label class="form-check-label" for={props.id}>
-              {props.label}
-            </label>
-          </>
-        ) : (
-          <></>
-        )}
-      </div>
-    </>
+    <div className={"mb-3"}>
+      {props.label ? (
+        <>
+          <div className={"mb-1"}>{props.label}</div>
+        </>
+      ) : (
+        <></>
+      )}
+      {props.data?.map((item) => (
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name={`checkbox-${props.id}-${slugify(item)}`}
+            id={`checkbox-${props.id}-${slugify(item)}`}
+            value={item}
+            checked={props.checked?.includes(item)}
+          />
+          <label
+            class="form-check-label"
+            for={`checkbox-${props.id}-${slugify(item)}`}
+          >
+            {item}
+          </label>
+        </div>
+      ))}
+    </div>
   ) : props.type === "select" ? (
     <>
       <div style={{ position: "relative" }} class={"mb-3"}>
