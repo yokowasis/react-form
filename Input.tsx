@@ -155,7 +155,13 @@ export default function Input(props: AppProps) {
             class="form-check-label"
             for={`radio-${props.id}-${slugify(item)}`}
           >
-            {props.dataLabels?.[i] || item}
+            {props.dataLabels?.[i] ? (
+              <div
+                dangerouslySetInnerHTML={{ __html: props.dataLabels[i] }}
+              ></div>
+            ) : (
+              <>{item}</>
+            )}
           </label>
         </div>
       ))}
