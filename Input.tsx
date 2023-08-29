@@ -209,6 +209,7 @@ export default function Input(props: AppProps) {
             id={`checkbox-${props.id}-${slugify(item)}`}
             value={item}
             checked={props.isChecked || props.checked?.includes(item)}
+            onChange={props.onChange}
           />
           <label
             class="form-check-label"
