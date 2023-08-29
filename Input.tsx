@@ -150,8 +150,10 @@ export default function Input(props: AppProps) {
             id={`radio-${props.id}-${slugify(item)}`}
             value={item}
             checked={props.value === item}
+            onChange={props.onChange}
           />
           <label
+            style={{ cursor: "pointer" }}
             class="form-check-label"
             for={`radio-${props.id}-${slugify(item)}`}
           >
