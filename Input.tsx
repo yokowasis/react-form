@@ -14,6 +14,7 @@ type AppProps = {
   iconBefore?: icons;
   checked?: string[];
   isChecked?: boolean;
+  inline?: boolean;
   data?: string[];
   dataLabels?: string[];
   rows?: number;
@@ -169,27 +170,28 @@ export default function Input(props: AppProps) {
       ))}
     </div>
   ) : props.type === "textarea" ? (
-    <div>
-      <div class="form-group">
-        {props.label ? (
-          <>
-            <label className={"mb-1"} for={props.id}>
-              {props.label}
-            </label>
-          </>
-        ) : (
-          <></>
-        )}
-        <textarea
-          onBlur={props.onBlur}
-          class="form-control"
-          id={props.id}
-          rows={props.rows || 3}
-          style={{ ...props.style }}
-        >
-          {props.value}
-        </textarea>
-      </div>
+    <div
+      class="form-group"
+      style={{ display: props.inline ? "inline-block" : "block" }}
+    >
+      {props.label ? (
+        <>
+          <label className={"mb-1"} for={props.id}>
+            {props.label}
+          </label>
+        </>
+      ) : (
+        <></>
+      )}
+      <textarea
+        onBlur={props.onBlur}
+        className={"form-control"}
+        id={props.id}
+        rows={props.rows || 3}
+        style={{ ...props.style }}
+      >
+        {props.value}
+      </textarea>
     </div>
   ) : props.type === "checkbox" ? (
     <div className={"mb-3"}>
