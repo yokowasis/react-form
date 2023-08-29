@@ -13,7 +13,9 @@ type AppProps = {
   iconAfter?: icons;
   iconBefore?: icons;
   checked?: string[];
+  isChecked?: boolean;
   data?: string[];
+  dataLabels?: string[];
   rows?: number;
   value?: string;
   style?: React.CSSProperties;
@@ -113,7 +115,7 @@ export default function Input(props: AppProps) {
             className={"bg-light w-100 border"}
             style={{ position: "absolute" }}
           >
-            {filteredData.map((item) => (
+            {filteredData.map((item, i) => (
               <div
                 onClick={() => {
                   setValue(item);
@@ -121,7 +123,7 @@ export default function Input(props: AppProps) {
                 }}
                 className={"autoInputChildren p-2"}
               >
-                {item}
+                {props.dataLabels?.[i] || item}
               </div>
             ))}
           </div>
@@ -139,7 +141,7 @@ export default function Input(props: AppProps) {
       ) : (
         <></>
       )}
-      {props.data?.map((item) => (
+      {props.data?.map((item, i) => (
         <div class="form-check">
           <input
             class="form-check-input"
@@ -153,7 +155,7 @@ export default function Input(props: AppProps) {
             class="form-check-label"
             for={`radio-${props.id}-${slugify(item)}`}
           >
-            {item}
+            {props.dataLabels?.[i] || item}
           </label>
         </div>
       ))}
@@ -190,7 +192,7 @@ export default function Input(props: AppProps) {
       ) : (
         <></>
       )}
-      {props.data?.map((item) => (
+      {props.data?.map((item, i) => (
         <div class="form-check">
           <input
             class="form-check-input"
@@ -198,13 +200,13 @@ export default function Input(props: AppProps) {
             name={`checkbox-${props.id}-${slugify(item)}`}
             id={`checkbox-${props.id}-${slugify(item)}`}
             value={item}
-            checked={props.checked?.includes(item)}
+            checked={props.isChecked || props.checked?.includes(item)}
           />
           <label
             class="form-check-label"
             for={`checkbox-${props.id}-${slugify(item)}`}
           >
-            {item}
+            {props.dataLabels?.[i] || item}
           </label>
         </div>
       ))}
@@ -237,8 +239,8 @@ export default function Input(props: AppProps) {
             id={props.id}
             placeholder={props.placeholder}
           >
-            {props.data?.map((item) => (
-              <option>{item}</option>
+            {props.data?.map((item, i) => (
+              <option value={item}>{props.dataLabels?.[i] || item}</option>
             ))}
           </select>
 
