@@ -20,6 +20,8 @@ type AppProps = {
   rows?: number;
   value?: string;
   style?: React.CSSProperties;
+  readonly?: boolean;
+  dataShowAll?: boolean;
   onBlur?: (e: any) => void;
   onChange?: (e: any) => void;
 };
@@ -42,10 +44,10 @@ export default function Input(props: AppProps) {
   }, []);
 
   return props.type === "text" || props.type === "password" ? (
-    <div style={{ position: "relative" }} class={"mb-3"}>
+    <div style={{ position: "relative" }} className={"mb-3"}>
       {props.label ? (
         <div className={props.labelClass}>
-          <label for={`${props.id}`}>{props.label}</label>
+          <label htmlFor={`${props.id}`}>{props.label}</label>
         </div>
       ) : (
         <></>
@@ -68,16 +70,26 @@ export default function Input(props: AppProps) {
           type={props.type}
           className="form-control"
           placeholder={props.placeholder}
-          autocomplete={"off"}
+          autoComplete={"off"}
           id={props.id}
           value={value}
           onBlur={props.onBlur}
+          readOnly={props.readonly}
+          onFocus={() => {
+            if (props.dataShowAll) {
+              setFilteredData(props.data || []);
+            }
+          }}
           onChange={(e) => {
             const target = e.target as any as { value: string };
             const val = target.value as string;
             setValue(val);
             if (val === "") {
-              setFilteredData([]);
+              if (props.dataShowAll) {
+                setFilteredData(props.data || []);
+              } else {
+                setFilteredData([]);
+              }
             } else {
               setFilteredData(
                 props.data?.filter((item) =>
@@ -143,9 +155,9 @@ export default function Input(props: AppProps) {
         <></>
       )}
       {props.data?.map((item, i) => (
-        <div class="form-check">
+        <div className="form-check">
           <input
-            class="form-check-input"
+            className="form-check-input"
             type="radio"
             name={props.id}
             id={`radio-${props.id}-${slugify(item)}`}
@@ -155,8 +167,8 @@ export default function Input(props: AppProps) {
           />
           <label
             style={{ cursor: "pointer" }}
-            class="form-check-label"
-            for={`radio-${props.id}-${slugify(item)}`}
+            className="form-check-label"
+            htmlFor={`radio-${props.id}-${slugify(item)}`}
           >
             {props.dataLabels?.[i] ? (
               <div
@@ -171,12 +183,12 @@ export default function Input(props: AppProps) {
     </div>
   ) : props.type === "textarea" ? (
     <div
-      class="form-group"
+      className="form-group"
       style={{ display: props.inline ? "inline-block" : "block" }}
     >
       {props.label ? (
         <>
-          <label className={"mb-1"} for={props.id}>
+          <label className={"mb-1"} htmlFor={props.id}>
             {props.label}
           </label>
         </>
@@ -203,9 +215,9 @@ export default function Input(props: AppProps) {
         <></>
       )}
       {props.data?.map((item, i) => (
-        <div class="form-check">
+        <div className="form-check">
           <input
-            class="form-check-input"
+            className="form-check-input"
             type="checkbox"
             name={`checkbox-${props.id}-${slugify(item)}`}
             id={`checkbox-${props.id}-${slugify(item)}`}
@@ -214,8 +226,8 @@ export default function Input(props: AppProps) {
             onChange={props.onChange}
           />
           <label
-            class="form-check-label"
-            for={`checkbox-${props.id}-${slugify(item)}`}
+            className="form-check-label"
+            htmlFor={`checkbox-${props.id}-${slugify(item)}`}
           >
             {props.dataLabels?.[i] || item}
           </label>
@@ -224,10 +236,10 @@ export default function Input(props: AppProps) {
     </div>
   ) : props.type === "select" ? (
     <>
-      <div style={{ position: "relative" }} class={"mb-3"}>
+      <div style={{ position: "relative" }} className={"mb-3"}>
         {props.label ? (
           <div className={props.labelClass}>
-            <label for={`${props.id}`}>{props.label}</label>
+            <label htmlFor={`${props.id}`}>{props.label}</label>
           </div>
         ) : (
           <></>
