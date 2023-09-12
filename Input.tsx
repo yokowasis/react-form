@@ -44,7 +44,10 @@ export default function Input(props: AppProps) {
   }, []);
 
   return props.type === "text" || props.type === "password" ? (
-    <div style={{ position: "relative" }} className={"mb-3"}>
+    <div
+      style={{ position: "relative" }}
+      className={"mb-3"}
+    >
       {props.label ? (
         <div className={props.labelClass}>
           <label htmlFor={`${props.id}`}>{props.label}</label>
@@ -130,6 +133,7 @@ export default function Input(props: AppProps) {
           >
             {filteredData.map((item, i) => (
               <div
+                key={i}
                 onClick={() => {
                   setValue(item);
                   setFilteredData([]);
