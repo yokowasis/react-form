@@ -218,3 +218,13 @@ export function rp(url: string): Promise<any> {
       });
   });
 }
+
+export function showModal(id: string) {
+  const btn = document.getElementById(`modalBtn-${id}`);
+  if (btn) btn.click();
+}
+
+export function closeModal(id: string) {
+  const btn = document.getElementById(`modalBtnClose-${id}`);
+  if (btn) btn.click();
+}
