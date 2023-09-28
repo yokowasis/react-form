@@ -1,5 +1,7 @@
 import { AES, enc } from "crypto-js";
 import bcrypt from "bcryptjs";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 const PUBLIC_LOCAL_KEY = "123123";
 
 export function getVal(id: string) {
@@ -29,13 +31,13 @@ export function getToken(salt = "$2a$10$us4l1evreCGvANr2QiCz8O") {
   };
 
   // get current date and time
-  let now = new Date();
+  const now = new Date();
 
   // set timezone to Central Indonesia Time (UTC+8)
   now.setUTCHours(now.getUTCHours() + 8);
 
   // round down to the nearest 15-minute interval
-  let roundedMinutes = Math.floor(now.getUTCMinutes() / 15) * 15;
+  const roundedMinutes = Math.floor(now.getUTCMinutes() / 15) * 15;
   now.setUTCMinutes(roundedMinutes);
   now.setUTCSeconds(0);
   now.setUTCMilliseconds(0);
@@ -68,7 +70,7 @@ export function setVal(id: string, value: string) {
 }
 
 export function getAllVal() {
-  let hasil: { [x: string]: string } = {};
+  const hasil: { [x: string]: string } = {};
   document
     .querySelectorAll<HTMLInputElement>(".form-control")
     .forEach((elem) => {
@@ -115,7 +117,7 @@ export function setStorageVar(key: string, val: any) {
   localStorage.setItem(key, s.toString());
 }
 
-export function getStorageVar(key: string) {
+export function getStorageVar(key: string): any | undefined {
   const item = localStorage.getItem(key);
   if (!item) return undefined;
   const encrypted = item;
@@ -125,16 +127,16 @@ export function getStorageVar(key: string) {
 }
 
 export function parseJwt(token: string) {
-  var base64Url = token.split(".")[1];
-  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-  var jsonPayload = decodeURIComponent(
+  const base64Url = token.split(".")[1];
+  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  const jsonPayload = decodeURIComponent(
     window
       .atob(base64)
       .split("")
       .map(function (c) {
         return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
       })
-      .join("")
+      .join(""),
   );
 
   return JSON.parse(jsonPayload);
@@ -182,11 +184,11 @@ export function convertImgSrcToBase64(htmlString: string): Promise<string> {
           reader.onloadend = () => {
             const base64String: string = (reader as any).result.replace(
               /^data:.+;base64,/,
-              ""
+              "",
             );
             imgElement.setAttribute(
               "src",
-              `data:image/png;base64,${base64String}`
+              `data:image/png;base64,${base64String}`,
             );
             loadHandler();
           };
