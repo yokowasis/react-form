@@ -44,10 +44,7 @@ export default function Input(props: AppProps) {
   }, []);
 
   return props.type === "text" || props.type === "password" ? (
-    <div
-      style={{ position: "relative" }}
-      className={"mb-3"}
-    >
+    <div style={{ position: "relative" }} className={"mb-3"}>
       {props.label ? (
         <div className={props.labelClass}>
           <label htmlFor={`${props.id}`}>{props.label}</label>
@@ -96,8 +93,8 @@ export default function Input(props: AppProps) {
             } else {
               setFilteredData(
                 props.data?.filter((item) =>
-                  item.toLowerCase().includes(target.value.toLowerCase())
-                ) as string[]
+                  item.toLowerCase().includes(target.value.toLowerCase()),
+                ) as string[],
               );
             }
           }}
@@ -267,7 +264,9 @@ export default function Input(props: AppProps) {
             placeholder={props.placeholder}
           >
             {props.data?.map((item, i) => (
-              <option value={item}>{props.dataLabels?.[i] || item}</option>
+              <option key={item} value={item}>
+                {props.dataLabels?.[i] || item}
+              </option>
             ))}
           </select>
 
