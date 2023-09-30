@@ -5,7 +5,16 @@ import I from "./I";
 import { slugify } from "./Fn";
 
 type AppProps = {
-  type: "text" | "select" | "password" | "checkbox" | "textarea" | "radio";
+  type:
+    | "text"
+    | "select"
+    | "password"
+    | "checkbox"
+    | "textarea"
+    | "radio"
+    | "time"
+    | "number"
+    | "date";
   id: string;
   label?: string;
   labelClass?: string;
@@ -43,7 +52,11 @@ export default function Input(props: AppProps) {
     setValue(props.value || "");
   }, []);
 
-  return props.type === "text" || props.type === "password" ? (
+  return props.type === "text" ||
+    props.type === "number" ||
+    props.type === "time" ||
+    props.type === "password" ||
+    props.type === "date" ? (
     <div style={{ position: "relative" }} className={"mb-3"}>
       {props.label ? (
         <div className={props.labelClass}>
