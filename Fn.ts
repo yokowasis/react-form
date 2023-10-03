@@ -136,7 +136,7 @@ export function parseJwt(token: string) {
       .map(function (c) {
         return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
       })
-      .join(""),
+      .join("")
   );
 
   return JSON.parse(jsonPayload);
@@ -184,11 +184,11 @@ export function convertImgSrcToBase64(htmlString: string): Promise<string> {
           reader.onloadend = () => {
             const base64String: string = (reader as any).result.replace(
               /^data:.+;base64,/,
-              "",
+              ""
             );
             imgElement.setAttribute(
               "src",
-              `data:image/png;base64,${base64String}`,
+              `data:image/png;base64,${base64String}`
             );
             loadHandler();
           };
