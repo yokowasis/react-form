@@ -163,7 +163,10 @@ export default function Input(props: AppProps) {
         <></>
       )}
       {props.description ? (
-        <div className="fs-08 mt-1">{props.description}</div>
+        <div
+          className="fs-08 mt-1"
+          dangerouslySetInnerHTML={{ __html: props.description }}
+        ></div>
       ) : (
         <></>
       )}
@@ -204,7 +207,10 @@ export default function Input(props: AppProps) {
         </div>
       ))}
       {props.description ? (
-        <div className="fs-08 mt-1">{props.description}</div>
+        <div
+          className="fs-08 mt-1"
+          dangerouslySetInnerHTML={{ __html: props.description }}
+        ></div>
       ) : (
         <></>
       )}
@@ -233,7 +239,10 @@ export default function Input(props: AppProps) {
         {props.value}
       </textarea>
       {props.description ? (
-        <div className="fs-08 mt-1">{props.description}</div>
+        <div
+          className="fs-08 mt-1"
+          dangerouslySetInnerHTML={{ __html: props.description }}
+        ></div>
       ) : (
         <></>
       )}
@@ -267,7 +276,10 @@ export default function Input(props: AppProps) {
         </div>
       ))}
       {props.description ? (
-        <div className="fs-08 mt-1">{props.description}</div>
+        <div
+          className="fs-08 mt-1"
+          dangerouslySetInnerHTML={{ __html: props.description }}
+        ></div>
       ) : (
         <></>
       )}
