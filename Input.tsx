@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useEffect, useState } from "react";
 import { icons } from "./Types";
 import "./Input.scss";
@@ -31,6 +34,7 @@ type AppProps = {
   style?: React.CSSProperties;
   readonly?: boolean;
   dataShowAll?: boolean;
+  description?: string;
   onBlur?: (e: any) => void;
   onChange?: (e: any) => void;
 };
@@ -106,8 +110,8 @@ export default function Input(props: AppProps) {
             } else {
               setFilteredData(
                 props.data?.filter((item) =>
-                  item.toLowerCase().includes(target.value.toLowerCase()),
-                ) as string[],
+                  item.toLowerCase().includes(target.value.toLowerCase())
+                ) as string[]
               );
             }
           }}
@@ -158,6 +162,11 @@ export default function Input(props: AppProps) {
       ) : (
         <></>
       )}
+      {props.description ? (
+        <div className="fs-08 mt-1">{props.description}</div>
+      ) : (
+        <></>
+      )}
     </div>
   ) : props.type === "radio" ? (
     <div className={"form-group"}>
@@ -194,6 +203,11 @@ export default function Input(props: AppProps) {
           </label>
         </div>
       ))}
+      {props.description ? (
+        <div className="fs-08 mt-1">{props.description}</div>
+      ) : (
+        <></>
+      )}
     </div>
   ) : props.type === "textarea" ? (
     <div
@@ -218,6 +232,11 @@ export default function Input(props: AppProps) {
       >
         {props.value}
       </textarea>
+      {props.description ? (
+        <div className="fs-08 mt-1">{props.description}</div>
+      ) : (
+        <></>
+      )}
     </div>
   ) : props.type === "checkbox" ? (
     <div className={"mb-3"}>
@@ -247,6 +266,11 @@ export default function Input(props: AppProps) {
           </label>
         </div>
       ))}
+      {props.description ? (
+        <div className="fs-08 mt-1">{props.description}</div>
+      ) : (
+        <></>
+      )}
     </div>
   ) : props.type === "select" ? (
     <>
@@ -295,6 +319,13 @@ export default function Input(props: AppProps) {
             <></>
           )}
         </div>
+        {props.description ? (
+          <div className="mt-1 ml-2" style={{ fontSize: ".8rem" }}>
+            {props.description}
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   ) : (
