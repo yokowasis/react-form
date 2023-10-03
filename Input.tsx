@@ -332,9 +332,11 @@ export default function Input(props: AppProps) {
           )}
         </div>
         {props.description ? (
-          <div className="mt-1 ml-2" style={{ fontSize: ".8rem" }}>
-            {props.description}
-          </div>
+          <div
+            className="mt-1 ml-2"
+            style={{ fontSize: ".8rem" }}
+            dangerouslySetInnerHTML={{ __html: props.description }}
+          ></div>
         ) : (
           <></>
         )}
