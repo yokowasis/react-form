@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { AES, enc } from "crypto-js";
 import bcrypt from "bcryptjs";
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 const PUBLIC_LOCAL_KEY = "123123";
 
