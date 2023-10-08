@@ -54,10 +54,9 @@ export function getToken(salt = "$2a$10$us4l1evreCGvANr2QiCz8O") {
 }
 
 export function setVal(id: string, value: string) {
-  if (typeof document === "undefined" || typeof window === "undefined")
-    return "";
+  if (typeof document === "undefined" || typeof window === "undefined") return;
   const elem = document.getElementById(id);
-  if (typeof elem === "undefined" || elem === null) return "";
+  if (typeof elem === "undefined" || elem === null) return;
 
   switch (elem.dataset.type) {
     case "select":
