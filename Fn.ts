@@ -228,3 +228,20 @@ export function closeModal(id: string) {
   const btn = document.getElementById(`modalBtnClose-${id}`);
   if (btn) btn.click();
 }
+
+export async function now() {
+  const r = await fetch(`https://bima-global.bimasoft.workers.dev/?_=/now`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+  try {
+    const json: { now: string } = await r.json();
+    return json;
+  } catch (error) {
+    console.log(error);
+    return { now: "" };
+  }
+}
