@@ -229,6 +229,15 @@ export function closeModal(id: string) {
   if (btn) btn.click();
 }
 
+export function randomLightColor() {
+  var letters = "BCDEF".split("");
+  var color = "#";
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * letters.length)];
+  }
+  return color;
+}
+
 export async function now() {
   const r = await fetch(`https://bima-global.bimasoft.workers.dev/?_=/now`, {
     method: "GET",
