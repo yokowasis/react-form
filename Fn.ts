@@ -265,8 +265,10 @@ export function createLine(
   const prev = document.getElementById(s);
   if (prev) prev.remove();
 
-  const radio1 = document.getElementById(id0) as HTMLElement;
-  const radio2 = document.getElementById(id1) as HTMLElement;
+  const radio1 = document.getElementById(id0);
+  const radio2 = document.getElementById(id1);
+
+  if (!radio1 || !radio2) return;
   //   get top offset
   const top1 = radio1.offsetTop + 6;
   const top2 = radio2.offsetTop + 6;
