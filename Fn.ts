@@ -254,3 +254,72 @@ export async function now() {
     return { now: "" };
   }
 }
+
+export function createLine(
+  id0: string,
+  id1: string,
+  s: string,
+  parent: string = "container"
+) {
+  // delete previous line
+  const prev = document.getElementById(s);
+  if (prev) prev.remove();
+
+  const radio1 = document.getElementById(id0) as HTMLElement;
+  const radio2 = document.getElementById(id1) as HTMLElement;
+  //   get top offset
+  const top1 = radio1.offsetTop + 6;
+  const top2 = radio2.offsetTop + 6;
+
+  // get left offset
+  const left1 = radio1.offsetLeft + 8;
+  const left2 = radio2.offsetLeft + 8;
+
+  //   calculate angle
+  const angle = Math.atan2(top2 - top1, left2 - left1) * (180 / Math.PI);
+
+  console.log({
+    top1,
+    top2,
+    left1,
+    left2,
+    angle,
+  });
+
+  // calculate distance
+  const x = Math.sqrt(Math.pow(left2 - left1, 2) + Math.pow(top2 - top1, 2));
+
+  // half height
+  const y = (top2 - top1) / 2;
+  // half x
+  const x2 = x / 2;
+
+  //   create line
+  const line = document.createElement("div");
+  line.id = s;
+  line.classList.add("linepenjodohan");
+  line.style.width = x + "px";
+  line.style.height = "2px";
+
+  //   random color
+  line.style.backgroundColor = `#${Math.floor(
+    Math.random() * 16777215
+  ).toString(16)}`;
+
+  radio1.style.backgroundColor = line.style.backgroundColor;
+  radio1.style.borderColor = line.style.backgroundColor;
+  radio2.style.backgroundColor = line.style.backgroundColor;
+  radio2.style.borderColor = line.style.backgroundColor;
+
+  line.style.transform = `rotate(${angle}deg)`;
+  line.style.position = "absolute";
+  line.style.top = `${top1}px`;
+  line.style.left = `${left1}px`;
+  line.style.transformOrigin = "0% 0%";
+  line.style.pointerEvents = "none";
+  (document.getElementById(parent) as HTMLElement).appendChild(line);
+
+  return () => {
+    line.remove();
+  };
+}
