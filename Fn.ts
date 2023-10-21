@@ -280,13 +280,13 @@ export function createLine(
   //   calculate angle
   const angle = Math.atan2(top2 - top1, left2 - left1) * (180 / Math.PI);
 
-  console.log({
-    top1,
-    top2,
-    left1,
-    left2,
-    angle,
-  });
+  // console.log({
+  //   top1,
+  //   top2,
+  //   left1,
+  //   left2,
+  //   angle,
+  // });
 
   // calculate distance
   const x = Math.sqrt(Math.pow(left2 - left1, 2) + Math.pow(top2 - top1, 2));
