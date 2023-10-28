@@ -120,10 +120,10 @@ export function paddingZero(num: number, size: number = 2) {
 }
 
 export function encodeVar(val: any) {
-  console.log(val);
-  console.log(JSON.stringify(val));
+  // console.log(val);
+  // console.log(JSON.stringify(val));
   const s = AES.encrypt(JSON.stringify(val), PUBLIC_LOCAL_KEY);
-  console.log(decodeVar(s.toString()));
+  // console.log(decodeVar(s.toString()));
   return s.toString();
 }
 
