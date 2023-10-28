@@ -3,6 +3,15 @@
 import { AES, enc } from "crypto-js";
 import bcrypt from "bcryptjs";
 
+type environment = {
+  env: {
+    VITE_PUBLIC_LOCAL_KEY: string;
+  };
+};
+
+const PUBLIC_LOCAL_KEY =
+  (import.meta as any as environment).env.VITE_PUBLIC_LOCAL_KEY || "123123";
+
 export function getVal(id: string) {
   if (typeof document === "undefined" || typeof window === "undefined")
     return "";
@@ -110,11 +119,7 @@ export function paddingZero(num: number, size: number = 2) {
   return s;
 }
 
-export function setStorageVar(
-  key: string,
-  val: any,
-  PUBLIC_LOCAL_KEY = "123123"
-) {
+export function setStorageVar(key: string, val: any) {
   const s = AES.encrypt(JSON.stringify(val), PUBLIC_LOCAL_KEY);
   localStorage.setItem(key, s.toString());
 }
