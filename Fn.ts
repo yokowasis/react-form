@@ -143,7 +143,7 @@ export function getStorageVar(key: string): any | undefined {
   const item = localStorage.getItem(key);
   if (!item) return undefined;
   const s = decodeVar(item);
-  return JSON.parse(s);
+  return s;
 }
 
 export function parseJwt(token: string) {
