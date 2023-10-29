@@ -131,7 +131,11 @@ export function decodeVar(item: string) {
   const encrypted = item;
   const decrypted = AES.decrypt(encrypted, PUBLIC_LOCAL_KEY);
   const s = decrypted.toString(enc.Utf8);
-  return JSON.parse(s);
+  if (s) {
+    return JSON.parse(s);
+  } else {
+    return;
+  }
 }
 
 export function setStorageVar(key: string, val: any) {
