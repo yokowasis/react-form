@@ -6,6 +6,8 @@ import { icons } from "./Types";
 import "./Input.scss";
 import I from "./I";
 import { slugify } from "./Fn";
+import React from "react";
+import { toast } from "react-toastify";
 
 type AppProps = {
   type:
@@ -16,6 +18,7 @@ type AppProps = {
     | "textarea"
     | "radio"
     | "time"
+    | "uploadimage"
     | "number"
     | "date";
   id: string;
@@ -284,6 +287,92 @@ export default function Input(props: AppProps) {
         <></>
       )}
     </div>
+  ) : props.type === "uploadimage" ? (
+    <>
+      <div style={{ position: "relative" }} className={"mb-3"}>
+        {props.label ? (
+          <div className={props.labelClass}>
+            <label htmlFor={`${props.id}`}>{props.label}</label>
+          </div>
+        ) : (
+          <></>
+        )}
+        <div className="input-group">
+          {props.iconBefore ? (
+            <>
+              <div className="input-group-prepend">
+                <span className="input-group-text">
+                  <I c={props.iconBefore} />
+                </span>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+
+          <input
+            style={{ ...props.style }}
+            type={props.type}
+            className="form-control"
+            placeholder={props.placeholder}
+            autoComplete={"off"}
+            id={props.id}
+            value={value}
+            onChange={(e) => {}}
+            readOnly
+          />
+          <div className="input-group-append">
+            <button
+              className="input-group-text btn-primary"
+              onClick={() => {
+                const input = document.getElementById(
+                  `${props.id}-selector`
+                ) as HTMLInputElement;
+                input.click();
+              }}
+            >
+              <input
+                type="file"
+                className="d-none"
+                id={`${props.id}-selector`}
+                onChange={async (e) => {
+                  setValue("Uploading...");
+                  const target = e.target as any as { files: FileList };
+                  if (!target) {
+                    setValue("");
+                    return;
+                  }
+                  const file = target.files[0];
+                  const ext = file.name.split(".").pop();
+                  const filename = `${props.id}-${Date.now()}.${ext}`;
+                  await fetch(
+                    `https://cbtadmin.bimasoft.workers.dev/?cbtindex=1&_=/s3/add&filekey=${filename}`,
+                    {
+                      headers: {
+                        "Content-Type": "application/octet-stream",
+                        Accept: "application/json",
+                      },
+                      method: "POST",
+                      body: file,
+                    }
+                  );
+                  setValue(`https://s3.app.web.id/${filename}`);
+                }}
+              />
+              <I c={"upload"} /> <span className="ml-2">Upload</span>
+            </button>
+          </div>
+        </div>
+        {props.description ? (
+          <div
+            className="fs-08 mt-1"
+            dangerouslySetInnerHTML={{ __html: props.description }}
+          ></div>
+        ) : (
+          <></>
+        )}
+      </div>
+    </>
   ) : props.type === "select" ? (
     <>
       <div style={{ position: "relative" }} className={"mb-3"}>
