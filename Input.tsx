@@ -7,7 +7,6 @@ import "./Input.scss";
 import I from "./I";
 import { slugify } from "./Fn";
 import React from "react";
-import { toast } from "react-toastify";
 
 type AppProps = {
   type:
@@ -57,7 +56,7 @@ export default function Input(props: AppProps) {
 
   useEffect(() => {
     setValue(props.value || "");
-  }, []);
+  }, [props.value]);
 
   return props.type === "text" ||
     props.type === "number" ||
@@ -318,12 +317,21 @@ export default function Input(props: AppProps) {
             autoComplete={"off"}
             id={props.id}
             value={value}
-            onChange={(e) => {}}
             readOnly
           />
           <div className="input-group-append">
             <button
-              className="input-group-text btn-primary"
+              className="input-group-text btn-danger btn"
+              onClick={() => {
+                const s = document.getElementById(props.id) as HTMLInputElement;
+                s.value = "";
+                setValue("");
+              }}
+            >
+              <I c="trash" />
+            </button>
+            <button
+              className="input-group-text btn-primary btn"
               onClick={() => {
                 const input = document.getElementById(
                   `${props.id}-selector`
