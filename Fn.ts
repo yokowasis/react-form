@@ -349,3 +349,34 @@ export function createLine(
     line.remove();
   };
 }
+
+export function newDate(
+  datestring: string,
+  timezone: "Asia/Jakarta" | "Asia/Makassar" | "Asia/Jayapura"
+): Date {
+  const d = new Date(datestring);
+
+  let offset = 0;
+
+  switch (timezone) {
+    case "Asia/Jakarta":
+      offset = -7;
+      break;
+
+    case "Asia/Makassar":
+      offset = -8;
+      break;
+
+    case "Asia/Jayapura":
+      offset = -9;
+      break;
+
+    default:
+      break;
+  }
+
+  const hours = d.getHours();
+  d.setHours(hours + offset);
+
+  return d;
+}
