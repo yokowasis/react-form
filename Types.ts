@@ -1952,3 +1952,11 @@ export type icons =
   | "sina-weibo"
   | "tencent-qq"
   | "wikipedia";
+
+export type TypeOfColor =
+  | "primary"
+  | "secondary"
+  | "warning"
+  | "danger"
+  | "info"
+  | "success";
