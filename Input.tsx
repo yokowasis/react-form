@@ -37,6 +37,7 @@ type AppProps = {
   readonly?: boolean;
   dataShowAll?: boolean;
   description?: string;
+  mb?: 0 | 1 | 2 | 3 | 4 | 5;
   onBlur?: (e: any) => void;
   onChange?: (e: any) => void;
 };
@@ -63,7 +64,10 @@ export default function Input(props: AppProps) {
     props.type === "time" ||
     props.type === "password" ||
     props.type === "date" ? (
-    <div style={{ position: "relative" }} className={"mb-3"}>
+    <div
+      style={{ position: "relative" }}
+      className={`mb-${props.mb >= 0 ? props.mb : 3}`}
+    >
       {props.label ? (
         <div className={props.labelClass}>
           <label htmlFor={`${props.id}`}>{props.label}</label>
@@ -183,7 +187,7 @@ export default function Input(props: AppProps) {
         <></>
       )}
       {props.data?.map((item, i) => (
-        <div className="form-check">
+        <div className="form-check" key={i}>
           <input
             className="form-check-input"
             type="radio"
@@ -250,7 +254,7 @@ export default function Input(props: AppProps) {
       )}
     </div>
   ) : props.type === "checkbox" ? (
-    <div className={"mb-3"}>
+    <div className={`mb-${props.mb >= 0 ? props.mb : 3}`}>
       {props.label ? (
         <>
           <div className={"mb-1"}>{props.label}</div>
@@ -259,7 +263,7 @@ export default function Input(props: AppProps) {
         <></>
       )}
       {props.data?.map((item, i) => (
-        <div className="form-check">
+        <div className="form-check" key={i}>
           <input
             className="form-check-input"
             type="checkbox"
@@ -288,7 +292,10 @@ export default function Input(props: AppProps) {
     </div>
   ) : props.type === "uploadimage" ? (
     <>
-      <div style={{ position: "relative" }} className={"mb-3"}>
+      <div
+        style={{ position: "relative" }}
+        className={`mb-${props.mb >= 0 ? props.mb : 3}`}
+      >
         {props.label ? (
           <div className={props.labelClass}>
             <label htmlFor={`${props.id}`}>{props.label}</label>
@@ -383,7 +390,10 @@ export default function Input(props: AppProps) {
     </>
   ) : props.type === "select" ? (
     <>
-      <div style={{ position: "relative" }} className={"mb-3"}>
+      <div
+        style={{ position: "relative" }}
+        className={`mb-${props.mb >= 0 ? props.mb : 3}`}
+      >
         {props.label ? (
           <div className={props.labelClass}>
             <label htmlFor={`${props.id}`}>{props.label}</label>
