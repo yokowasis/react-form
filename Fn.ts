@@ -120,17 +120,17 @@ export function paddingZero(num: number, size: number = 2) {
   return s;
 }
 
-export function encodeVar(val: any) {
+export function encodeVar(val: any, LOCAL_KEY = "") {
   // console.log(val);
   // console.log(JSON.stringify(val));
-  const s = AES.encrypt(JSON.stringify(val), PUBLIC_LOCAL_KEY);
+  const s = AES.encrypt(JSON.stringify(val), LOCAL_KEY || PUBLIC_LOCAL_KEY);
   // console.log(decodeVar(s.toString()));
   return s.toString();
 }
 
-export function decodeVar(item: string) {
+export function decodeVar(item: string, LOCAL_KEY = "") {
   const encrypted = item;
-  const decrypted = AES.decrypt(encrypted, PUBLIC_LOCAL_KEY);
+  const decrypted = AES.decrypt(encrypted, LOCAL_KEY || PUBLIC_LOCAL_KEY);
   const s = decrypted.toString(enc.Utf8);
   if (s) {
     return JSON.parse(s);
@@ -139,15 +139,15 @@ export function decodeVar(item: string) {
   }
 }
 
-export function setStorageVar(key: string, val: any) {
-  const s = encodeVar(val);
+export function setStorageVar(key: string, val: any, LOCAL_KEY = "") {
+  const s = encodeVar(val, LOCAL_KEY);
   localStorage.setItem(key, s);
 }
 
-export function getStorageVar(key: string): any | undefined {
+export function getStorageVar(key: string, LOCAL_KEY = ""): any | undefined {
   const item = localStorage.getItem(key);
   if (!item) return undefined;
-  const s = decodeVar(item);
+  const s = decodeVar(item, LOCAL_KEY);
   return s;
 }
 
