@@ -3,16 +3,6 @@
 import { AES, enc } from "crypto-js";
 import bcrypt from "bcryptjs";
 
-type environment = {
-  env: {
-    VITE_PUBLIC_LOCAL_KEY: string;
-  };
-};
-
-const PUBLIC_LOCAL_KEY =
-  // @ts-ignore
-  (import.meta as any as environment).env.VITE_PUBLIC_LOCAL_KEY || "123123";
-
 export function getVal(id: string) {
   if (typeof document === "undefined" || typeof window === "undefined")
     return "";
@@ -120,17 +110,17 @@ export function paddingZero(num: number, size: number = 2) {
   return s;
 }
 
-export function encodeVar(val: any, LOCAL_KEY = "") {
+export function encodeVar(val: any, LOCAL_KEY: string) {
   // console.log(val);
   // console.log(JSON.stringify(val));
-  const s = AES.encrypt(JSON.stringify(val), LOCAL_KEY || PUBLIC_LOCAL_KEY);
+  const s = AES.encrypt(JSON.stringify(val), LOCAL_KEY);
   // console.log(decodeVar(s.toString()));
   return s.toString();
 }
 
-export function decodeVar(item: string, LOCAL_KEY = "") {
+export function decodeVar(item: string, LOCAL_KEY: string) {
   const encrypted = item;
-  const decrypted = AES.decrypt(encrypted, LOCAL_KEY || PUBLIC_LOCAL_KEY);
+  const decrypted = AES.decrypt(encrypted, LOCAL_KEY);
   const s = decrypted.toString(enc.Utf8);
   if (s) {
     return JSON.parse(s);
@@ -139,12 +129,15 @@ export function decodeVar(item: string, LOCAL_KEY = "") {
   }
 }
 
-export function setStorageVar(key: string, val: any, LOCAL_KEY = "") {
+export function setStorageVar(key: string, val: any, LOCAL_KEY = "123123") {
   const s = encodeVar(val, LOCAL_KEY);
   localStorage.setItem(key, s);
 }
 
-export function getStorageVar(key: string, LOCAL_KEY = ""): any | undefined {
+export function getStorageVar(
+  key: string,
+  LOCAL_KEY = "123123"
+): any | undefined {
   const item = localStorage.getItem(key);
   if (!item) return undefined;
   const s = decodeVar(item, LOCAL_KEY);
