@@ -11,7 +11,7 @@ type environment = {
 
 const PUBLIC_LOCAL_KEY =
   // @ts-ignore
-  (import.meta as any as environment)?.env?.VITE_PUBLIC_LOCAL_KEY || "123123";
+  (import.meta as any as environment).env.VITE_PUBLIC_LOCAL_KEY || "123123";
 
 export function getVal(id: string) {
   if (typeof document === "undefined" || typeof window === "undefined")
