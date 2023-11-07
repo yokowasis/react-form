@@ -20,14 +20,17 @@ export function generateSalt() {
   return bcrypt.genSaltSync(10);
 }
 
-export function getToken(salt = "$2a$10$us4l1evreCGvANr2QiCz8O") {
+export const hashPassword = (
+  password: string,
+  salt = "$2a$10$us4l1evreCGvANr2QiCz8O"
+) => {
+  // const salt = bcrypt.genSaltSync(10);
+  return bcrypt.hashSync(password, salt);
+};
+
+export function getToken() {
   // create a function to hash password using salt
   // import bcrypt
-
-  const hashPassword = (password: string) => {
-    // const salt = bcrypt.genSaltSync(10);
-    return bcrypt.hashSync(password, salt);
-  };
 
   // get current date and time
   const now = new Date();
