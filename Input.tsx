@@ -241,6 +241,8 @@ export default function Input(props: AppProps) {
         id={props.id}
         rows={props.rows || 3}
         style={{ ...props.style }}
+        placeholder={props.placeholder}
+        readOnly={props.readonly}
       >
         {props.value}
       </textarea>
