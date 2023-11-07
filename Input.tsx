@@ -31,6 +31,7 @@ type AppProps = {
   inline?: boolean;
   data?: string[];
   dataLabels?: string[];
+  onPaste?: (e: ClipboardEvent) => void;
   rows?: number;
   value?: string;
   style?: React.CSSProperties;
@@ -98,6 +99,9 @@ export default function Input(props: AppProps) {
           value={value}
           onBlur={props.onBlur}
           readOnly={props.readonly}
+          onPaste={(e) => {
+            props.onPaste(e as any);
+          }}
           onFocus={() => {
             if (props.dataShowAll) {
               setFilteredData(props.data || []);
@@ -243,6 +247,9 @@ export default function Input(props: AppProps) {
         style={{ ...props.style }}
         placeholder={props.placeholder}
         readOnly={props.readonly}
+        onPaste={(e) => {
+          props.onPaste(e as any);
+        }}
       >
         {props.value}
       </textarea>
