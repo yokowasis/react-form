@@ -348,6 +348,21 @@ export function randomLightColor() {
   return color;
 }
 
+export function randomDigit(digitCount = 6) {
+  let num = Math.floor(Math.random() * 10 ** digitCount);
+  return num.toString().padStart(digitCount, "0");
+}
+
+export function randomAlphaNumeric(length = 10) {
+  const charset =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let retVal = "";
+  for (let i = 0, n = charset.length; i < length; ++i) {
+    retVal += charset.charAt(Math.floor(Math.random() * n));
+  }
+  return retVal;
+}
+
 export async function now() {
   const r = await fetch(`https://bima-global.bimasoft.workers.dev/?_=/now`, {
     method: "GET",
@@ -489,7 +504,7 @@ async function verifyJWT(token, secret) {
       ...payload,
     };
   } catch (error) {
-    return { status: "err", err: error.toString() };
+    return undefined;
   }
 }
 
@@ -519,6 +534,7 @@ function generateJWTSecret(secret) {
 }
 
 /**
+ * Get JWT from Headers
  *
  * @param {import("next/server").NextRequest} req
  */
@@ -529,9 +545,20 @@ function getJWT(req) {
   return jwt;
 }
 
+/**
+ * Khusus untuk backend / nodejs. Fungsi ini tidak bisa jalan di browser.
+ *
+ * @param {string} token
+ * @returns
+ */
+function parseJwtNode(token) {
+  return JSON.parse(Buffer.from(token.split(".")[1], "base64").toString());
+}
+
 export const JWT = {
   verify: verifyJWT,
   generate: generateJWT,
   generateSecret: generateJWTSecret,
   get: getJWT,
+  parse: parseJwtNode,
 };
