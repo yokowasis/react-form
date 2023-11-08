@@ -297,6 +297,7 @@ export function convertImgSrcToBase64(htmlString) {
 /**
  *
  * @param {string} url
+ * @param {"GET" | "POST"} method
  * @returns {Promise<*>}
  */
 export function rp(url, method = "GET", body = {}, token = "") {
