@@ -1,8 +1,15 @@
+// @ts-check
+
 import { AES, enc } from "crypto-js";
 import bcrypt from "bcryptjs";
 import * as jose from "jose";
 
-export function getVal(id: string) {
+/**
+ *
+ * @param {string} id
+ * @returns
+ */
+export function getVal(id) {
   if (typeof document === "undefined" || typeof window === "undefined")
     return "";
   const elem = document.getElementById(id);
@@ -10,7 +17,7 @@ export function getVal(id: string) {
 
   switch (elem.dataset.type) {
     default:
-      return (elem as HTMLInputElement).value;
+      return /** @type {HTMLInputElement} */ (elem).value;
       break;
   }
 }
@@ -19,8 +26,13 @@ export function generateSalt() {
   return bcrypt.genSaltSync(10);
 }
 
+/**
+ *
+ * @param {string} password
+ * @param {string} salt
+ */
 export const hashPassword = (
-  password: string,
+  password,
   salt = "$2a$10$us4l1evreCGvANr2QiCz8O"
 ) => {
   // const salt = bcrypt.genSaltSync(10);
@@ -53,35 +65,45 @@ export function getToken() {
   return last5;
 }
 
-export function setVal(id: string, value: string) {
+/**
+ *
+ * @param {string} id
+ * @param {string} value
+ * @returns
+ */
+export function setVal(id, value) {
   if (typeof document === "undefined" || typeof window === "undefined") return;
   const elem = document.getElementById(id);
   if (typeof elem === "undefined" || elem === null) return;
 
   switch (elem.dataset.type) {
     case "select":
-      (elem as HTMLInputElement).value = value;
-      (elem as HTMLInputElement).dispatchEvent(new Event("change"));
+      /** @type {HTMLInputElement} */ (elem).value = value;
+      /** @type {HTMLInputElement} */ (elem).dispatchEvent(new Event("change"));
       break;
     default:
-      (elem as HTMLInputElement).value = value;
+      /** @type {HTMLInputElement} */ (elem).value = value;
       break;
   }
 }
 
 export function getAllVal() {
-  const hasil: { [x: string]: string } = {};
-  document
-    .querySelectorAll<HTMLInputElement>(".form-control")
-    .forEach((elem) => {
-      // skip if file input
-      if (elem.type === "file") return;
-      hasil[elem.id] = getVal(elem.id);
-    });
+  /** @type {Object.<string,string>} */
+  const hasil = {};
+  document.querySelectorAll(".form-control").forEach((elem) => {
+    // skip if file input
+    if (/** @type {HTMLInputElement} */ (elem).type === "file") return;
+    hasil[elem.id] = getVal(elem.id);
+  });
   return hasil;
 }
 
-export function slugify(text: string) {
+/**
+ *
+ * @param {string} text
+ * @returns
+ */
+export function slugify(text) {
   return text
     .toString()
     .toLowerCase()
@@ -92,7 +114,12 @@ export function slugify(text: string) {
     .replace(/-+$/, ""); // Trim - from end of text
 }
 
-export function capitalize(str: string) {
+/**
+ *
+ * @param {string} str
+ * @returns
+ */
+export function capitalize(str) {
   if (str) {
     str = str.replace(/_/g, " ");
     return str
@@ -102,17 +129,34 @@ export function capitalize(str: string) {
   } else return "";
 }
 
-export function digitGrouping(num: number) {
+/**
+ *
+ * @param {number} num
+ * @returns
+ */
+export function digitGrouping(num) {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
-export function paddingZero(num: number, size: number = 2) {
+/**
+ *
+ * @param {number} num
+ * @param {number} size
+ * @returns
+ */
+export function paddingZero(num, size = 2) {
   let s = num + "";
   while (s.length < size) s = "0" + s;
   return s;
 }
 
-export function encodeVar(val: any, LOCAL_KEY: string) {
+/**
+ *
+ * @param {*} val
+ * @param {string} LOCAL_KEY
+ * @returns
+ */
+export function encodeVar(val, LOCAL_KEY) {
   // console.log(val);
   // console.log(JSON.stringify(val));
   const s = AES.encrypt(JSON.stringify(val), LOCAL_KEY);
@@ -120,7 +164,13 @@ export function encodeVar(val: any, LOCAL_KEY: string) {
   return s.toString();
 }
 
-export function decodeVar(item: string, LOCAL_KEY: string) {
+/**
+ *
+ * @param {string} item
+ * @param {string} LOCAL_KEY
+ * @returns
+ */
+export function decodeVar(item, LOCAL_KEY) {
   const encrypted = item;
   const decrypted = AES.decrypt(encrypted, LOCAL_KEY);
   const s = decrypted.toString(enc.Utf8);
@@ -131,22 +181,36 @@ export function decodeVar(item: string, LOCAL_KEY: string) {
   }
 }
 
-export function setStorageVar(key: string, val: any, LOCAL_KEY = "123123") {
+/**
+ *
+ * @param {string} key
+ * @param {*} val
+ * @param {string} LOCAL_KEY
+ */
+export function setStorageVar(key, val, LOCAL_KEY) {
   const s = encodeVar(val, LOCAL_KEY);
   localStorage.setItem(key, s);
 }
 
-export function getStorageVar(
-  key: string,
-  LOCAL_KEY = "123123"
-): any | undefined {
+/**
+ *
+ * @param {string} key
+ * @param {string} LOCAL_KEY
+ * @returns {* | undefined}
+ */
+export function getStorageVar(key, LOCAL_KEY = "123123") {
   const item = localStorage.getItem(key);
   if (!item) return undefined;
   const s = decodeVar(item, LOCAL_KEY);
   return s;
 }
 
-export function parseJwt(token: string) {
+/**
+ *
+ * @param {string} token
+ * @returns
+ */
+export function parseJwt(token) {
   const base64Url = token.split(".")[1];
   const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
   const jsonPayload = decodeURIComponent(
@@ -162,19 +226,29 @@ export function parseJwt(token: string) {
   return JSON.parse(jsonPayload);
 }
 
-export async function imgURLtoBase64(url: string): Promise<string> {
+/**
+ *
+ * @param {string} url
+ * @returns {Promise<String>}
+ */
+export async function imgURLtoBase64(url) {
   const res = await fetch(url);
   const blob = await res.blob();
   return new Promise((resolve) => {
     const reader = new FileReader();
     reader.readAsDataURL(blob);
     reader.onloadend = () => {
-      resolve(reader.result as any as string);
+      resolve(/** @type {*} */ (reader).result);
     };
   });
 }
 
-export function convertImgSrcToBase64(htmlString: string): Promise<string> {
+/**
+ *
+ * @param {string} htmlString
+ * @returns {Promise<string>}
+ */
+export function convertImgSrcToBase64(htmlString) {
   return new Promise((resolve, reject) => {
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = htmlString;
@@ -202,7 +276,7 @@ export function convertImgSrcToBase64(htmlString: string): Promise<string> {
           const reader = new FileReader();
           reader.readAsDataURL(blob);
           reader.onloadend = () => {
-            const base64String: string = (reader as any).result.replace(
+            const base64String = /** @type {*} */ (reader).result.replace(
               /^data:.+;base64,/,
               ""
             );
@@ -220,31 +294,47 @@ export function convertImgSrcToBase64(htmlString: string): Promise<string> {
   });
 }
 
-export function rp(url: string): Promise<any> {
+/**
+ *
+ * @param {string} url
+ * @returns {Promise<*>}
+ */
+export function rp(url, method = "GET", body = {}, token = "") {
   return new Promise((resolve, reject) => {
     fetch(url, {
-      method: "GET",
+      method,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
+      body: JSON.stringify(body),
     })
       .then((res) => res.json())
       .then((result) => {
         resolve(result);
       })
       .catch((err) => {
-        reject(err);
+        resolve(false);
+        console.log(err);
       });
   });
 }
 
-export function showModal(id: string) {
+/**
+ *
+ * @param {string} id
+ */
+export function showModal(id) {
   const btn = document.getElementById(`modalBtn-${id}`);
   if (btn) btn.click();
 }
 
-export function closeModal(id: string) {
+/**
+ *
+ * @param {string} id
+ */
+export function closeModal(id) {
   const btn = document.getElementById(`modalBtnClose-${id}`);
   if (btn) btn.click();
 }
@@ -267,7 +357,8 @@ export async function now() {
     },
   });
   try {
-    const json: { now: string } = await r.json();
+    /** @type {{now:string}} */
+    const json = await r.json();
     return json;
   } catch (error) {
     console.log(error);
@@ -275,12 +366,15 @@ export async function now() {
   }
 }
 
-export function createLine(
-  id0: string,
-  id1: string,
-  s: string,
-  parent: string = "container"
-) {
+/**
+ *
+ * @param {string} id0
+ * @param {string} id1
+ * @param {string} s
+ * @param {string} parent
+ * @returns
+ */
+export function createLine(id0, id1, s, parent = "container") {
   // delete previous line
   const prev = document.getElementById(s);
   if (prev) prev.remove();
@@ -339,17 +433,22 @@ export function createLine(
   line.style.left = `${left1}px`;
   line.style.transformOrigin = "0% 0%";
   line.style.pointerEvents = "none";
-  (document.getElementById(parent) as HTMLElement).appendChild(line);
+  /** @type {HTMLElement} */ (document.getElementById(parent)).appendChild(
+    line
+  );
 
   return () => {
     line.remove();
   };
 }
 
-export function newDate(
-  datestring: string,
-  timezone: "Asia/Jakarta" | "Asia/Makassar" | "Asia/Jayapura"
-): Date {
+/**
+ *
+ * @param {string} datestring
+ * @param {"Asia/Jakarta" | "Asia/Makassar" | "Asia/Jayapura"} timezone
+ * @returns {Date}
+ */
+export function newDate(datestring, timezone) {
   const d = new Date(datestring);
 
   let offset = 0;
@@ -377,19 +476,30 @@ export function newDate(
   return d;
 }
 
-export async function verifyJWT(token: string, secret: Uint8Array) {
+/**
+ *
+ * @param {string} token
+ * @param {Uint8Array} secret
+ * @returns
+ */
+async function verifyJWT(token, secret) {
   try {
     const { payload } = await jose.jwtVerify(token, secret);
     return {
-      status: "ok",
       ...payload,
     };
   } catch (error) {
-    return { status: "err", err: (error as any).toString() };
+    return { status: "err", err: error.toString() };
   }
 }
 
-export async function generateJWT(data: any, secret: Uint8Array) {
+/**
+ *
+ * @param {*} data
+ * @param {Uint8Array} secret
+ * @returns
+ */
+async function generateJWT(data, secret) {
   const alg = "HS256";
   const jwt = await new jose.SignJWT(data)
     .setProtectedHeader({ alg })
@@ -398,7 +508,27 @@ export async function generateJWT(data: any, secret: Uint8Array) {
   return jwt;
 }
 
-export function generateJWTSecret(secret: string) {
+/**
+ *
+ * @param {string} secret
+ * @returns
+ */
+function generateJWTSecret(secret) {
   const r = new TextEncoder().encode(secret);
   return r;
 }
+
+/**
+ *
+ * @param {import("next/server").NextRequest} req
+ */
+function getJWT(req) {
+  console.log(req);
+}
+
+export const JWT = {
+  verify: verifyJWT,
+  generate: generateJWT,
+  generateSecret: generateJWTSecret,
+  get: getJWT,
+};
