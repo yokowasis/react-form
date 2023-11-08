@@ -523,7 +523,10 @@ function generateJWTSecret(secret) {
  * @param {import("next/server").NextRequest} req
  */
 function getJWT(req) {
-  console.log(req);
+  const bearer = req.headers.get("Authorization");
+  // get JWT
+  const jwt = bearer.replace("Bearer ", "");
+  return jwt;
 }
 
 export const JWT = {
