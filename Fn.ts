@@ -1,5 +1,6 @@
 import { AES, enc } from "crypto-js";
 import bcrypt from "bcryptjs";
+import * as jose from "jose";
 
 export function getVal(id: string) {
   if (typeof document === "undefined" || typeof window === "undefined")
@@ -374,4 +375,30 @@ export function newDate(
   d.setHours(hours + offset);
 
   return d;
+}
+
+export async function verifyJWT(token: string, secret: Uint8Array) {
+  try {
+    const { payload } = await jose.jwtVerify(token, secret);
+    return {
+      status: "ok",
+      ...payload,
+    };
+  } catch (error) {
+    return { status: "err", err: (error as any).toString() };
+  }
+}
+
+export async function generateJWT(data: any, secret: Uint8Array) {
+  const alg = "HS256";
+  const jwt = await new jose.SignJWT(data)
+    .setProtectedHeader({ alg })
+    .setIssuedAt()
+    .sign(secret);
+  return jwt;
+}
+
+export function generateJWTSecret(secret: string) {
+  const r = new TextEncoder().encode(secret);
+  return r;
 }
