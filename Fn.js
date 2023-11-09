@@ -301,15 +301,20 @@ export function convertImgSrcToBase64(htmlString) {
  * @returns {Promise<*>}
  */
 export function rp(url, method = "GET", body = {}, token = "") {
+  const localTokenJWT = localStorage.getItem("jwt");
+  const localTokentoken = localStorage.getItem("token");
+
+  const t = token || localTokenJWT || localTokentoken;
+
   return new Promise((resolve, reject) => {
     fetch(url, {
       method,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${t}`,
       },
-      body: JSON.stringify(body),
+      body: method === "POST" ? JSON.stringify(body) : undefined,
     })
       .then((res) => res.json())
       .then((result) => {
