@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { icons } from "./Types";
 import "./Input.scss";
 import I from "./I";
-import { slugify } from "./Fn";
+import { setVal, slugify } from "./Fn";
 import React from "react";
 
 type AppProps = {
@@ -44,7 +44,6 @@ type AppProps = {
 
 export default function Input(props: AppProps) {
   const [filteredData, setFilteredData] = useState<string[]>([]);
-  const [value, setValue] = useState("");
 
   function showPassword() {
     const input = document.getElementById(props.id) as HTMLInputElement;
@@ -56,7 +55,7 @@ export default function Input(props: AppProps) {
   }
 
   useEffect(() => {
-    setValue(props.value || "");
+    setVal(props.id, props.value || "");
   }, [props.value]);
 
   return props.type === "text" ||
@@ -66,7 +65,7 @@ export default function Input(props: AppProps) {
     props.type === "date" ? (
     <div
       style={{ position: "relative" }}
-      className={`mb-${props.mb >= 0 ? props.mb : 3}`}
+      className={`mb-${props?.mb && props.mb >= 0 ? props.mb : 3}`}
     >
       {props.label ? (
         <div className={props.labelClass}>
@@ -95,11 +94,10 @@ export default function Input(props: AppProps) {
           placeholder={props.placeholder}
           autoComplete={"off"}
           id={props.id}
-          value={value}
           onBlur={props.onBlur}
           readOnly={props.readonly}
           onPaste={(e) => {
-            props.onPaste(e as any);
+            if (props.onPaste) props.onPaste(e as any);
           }}
           onFocus={() => {
             if (props.dataShowAll) {
@@ -109,7 +107,7 @@ export default function Input(props: AppProps) {
           onChange={(e) => {
             const target = e.target as any as { value: string };
             const val = target.value as string;
-            setValue(val);
+            setVal(props.id, val);
             if (val === "") {
               if (props.dataShowAll) {
                 setFilteredData(props.data || []);
@@ -158,7 +156,7 @@ export default function Input(props: AppProps) {
               <div
                 key={i}
                 onClick={() => {
-                  setValue(item);
+                  setVal(props.id, item);
                   setFilteredData([]);
                 }}
                 className={"autoInputChildren p-2"}
@@ -247,7 +245,7 @@ export default function Input(props: AppProps) {
         placeholder={props.placeholder}
         readOnly={props.readonly}
         onPaste={(e) => {
-          props.onPaste(e as any);
+          if (props.onPaste) props.onPaste(e as any);
         }}
       >
         {props.value}
@@ -262,7 +260,7 @@ export default function Input(props: AppProps) {
       )}
     </div>
   ) : props.type === "checkbox" ? (
-    <div className={`mb-${props.mb >= 0 ? props.mb : 3}`}>
+    <div className={`mb-${props.mb && props.mb >= 0 ? props.mb : 3}`}>
       {props.label ? (
         <>
           <div className={"mb-1"}>{props.label}</div>
@@ -302,7 +300,7 @@ export default function Input(props: AppProps) {
     <>
       <div
         style={{ position: "relative" }}
-        className={`mb-${props.mb >= 0 ? props.mb : 3}`}
+        className={`mb-${props.mb && props.mb >= 0 ? props.mb : 3}`}
       >
         {props.label ? (
           <div className={props.labelClass}>
@@ -331,7 +329,6 @@ export default function Input(props: AppProps) {
             placeholder={props.placeholder}
             autoComplete={"off"}
             id={props.id}
-            value={value}
             readOnly
           />
           <div className="input-group-append">
@@ -340,7 +337,7 @@ export default function Input(props: AppProps) {
               onClick={() => {
                 const s = document.getElementById(props.id) as HTMLInputElement;
                 s.value = "";
-                setValue("");
+                setVal(props.id, "");
               }}
             >
               <I c="trash" />
@@ -359,10 +356,10 @@ export default function Input(props: AppProps) {
                 className="d-none"
                 id={`${props.id}-selector`}
                 onChange={async (e) => {
-                  setValue("Uploading...");
+                  setVal(props.id, "Uploading...");
                   const target = e.target as any as { files: FileList };
                   if (!target) {
-                    setValue("");
+                    setVal(props.id, "");
                     return;
                   }
                   const file = target.files[0];
@@ -379,7 +376,7 @@ export default function Input(props: AppProps) {
                       body: file,
                     }
                   );
-                  setValue(`https://s3.app.web.id/${filename}`);
+                  setVal(props.id, `https://s3.app.web.id/${filename}`);
                 }}
               />
               <I c={"upload"} /> <span className="ml-2">Upload</span>
@@ -400,7 +397,7 @@ export default function Input(props: AppProps) {
     <>
       <div
         style={{ position: "relative" }}
-        className={`mb-${props.mb >= 0 ? props.mb : 3}`}
+        className={`mb-${props.mb && props.mb >= 0 ? props.mb : 3}`}
       >
         {props.label ? (
           <div className={props.labelClass}>
