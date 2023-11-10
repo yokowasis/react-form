@@ -1,4 +1,6 @@
 // @ts-check
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { AES, enc } from "crypto-js";
 import bcrypt from "bcryptjs";
