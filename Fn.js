@@ -1,4 +1,5 @@
 // @ts-check
+/** @typedef {import("next/server").NextRequest} NextRequest */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -544,7 +545,7 @@ function generateJWTSecret(secret) {
 /**
  * Get JWT from Headers
  *
- * @param {import("next/server").NextRequest} req
+ * @param {NextRequest} req
  */
 function getJWT(req) {
   const bearer = req.headers.get("Authorization");
