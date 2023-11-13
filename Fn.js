@@ -300,26 +300,54 @@ export function convertImgSrcToBase64(htmlString) {
 /**
  *
  * @param {string} url
- * @param {"GET" | "POST"} method
+ * @param {"GET" | "POST" | "PUT" | "DELETE"} method
+ * @param {Object.<string,string>} body
+ * @param {string} token
+ * @param {"application/json" | "application/x-www-form-urlencoded"} contentType
  * @returns {Promise<*>}
  */
-export function rp(url, method = "GET", body = {}, token = "") {
+export function rp(
+  url,
+  method = "GET",
+  body = {},
+  token = "",
+  contentType = "application/json"
+) {
   const localTokenJWT = localStorage.getItem("jwt");
   const localTokentoken = localStorage.getItem("token");
 
   const t = token || localTokenJWT || localTokentoken;
+
+  let formBody;
+
+  if (contentType === "application/json") {
+    formBody = JSON.stringify(body);
+  } else if (contentType === "application/x-www-form-urlencoded") {
+    formBody = Object.keys(body)
+      .map(
+        (key) => encodeURIComponent(key) + "=" + encodeURIComponent(body[key])
+      )
+      .join("&");
+  }
 
   return new Promise((resolve, reject) => {
     fetch(url, {
       method,
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
+        "Content-Type": contentType,
         Authorization: `Bearer ${t}`,
       },
-      body: method === "POST" ? JSON.stringify(body) : undefined,
+      body: method !== "GET" ? formBody : undefined,
     })
-      .then((res) => res.json())
+      .then((response) => {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+          return response.json();
+        } else {
+          return response.text();
+        }
+      })
       .then((result) => {
         resolve(result);
       })
