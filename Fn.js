@@ -4,7 +4,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { AES, enc } from "crypto-js";
-import bcrypt from "bcrypt";
 import * as jose from "jose";
 
 /**
@@ -26,7 +25,7 @@ export function getVal(id) {
 }
 
 export function generateSalt() {
-  return bcrypt.genSaltSync(10);
+  return "$2a$10$us4l1evreCGvANr2QiCz8O";
 }
 
 /**
@@ -39,7 +38,7 @@ export const hashPassword = (
   salt = "$2a$10$us4l1evreCGvANr2QiCz8O"
 ) => {
   // const salt = bcrypt.genSaltSync(10);
-  return bcrypt.hashSync(password, salt);
+  return AES.encrypt(password, salt).toString();
 };
 
 export function getToken() {
