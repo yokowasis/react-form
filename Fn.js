@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { AES, enc } from "crypto-js";
+import bcrypt from "bcrypt";
 import * as jose from "jose";
 
 /**
