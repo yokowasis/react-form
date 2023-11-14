@@ -301,7 +301,7 @@ export function convertImgSrcToBase64(htmlString) {
  *
  * @param {string} url
  * @param {"GET" | "POST" | "PUT" | "DELETE"} method
- * @param {Object.<string,string>} body
+ * @param {*} body
  * @param {string} token
  * @param {"application/json" | "application/x-www-form-urlencoded"} contentType
  * @returns {Promise<*>}
@@ -318,6 +318,7 @@ export function rp(
 
   const t = token || localTokenJWT || localTokentoken;
 
+  /** @type {*} */
   let formBody;
 
   if (contentType === "application/json") {
@@ -578,8 +579,12 @@ function generateJWTSecret(secret) {
 function getJWT(req) {
   const bearer = req.headers.get("Authorization");
   // get JWT
-  const jwt = bearer.replace("Bearer ", "");
-  return jwt;
+  if (bearer) {
+    const jwt = bearer.replace("Bearer ", "");
+    return jwt;
+  } else {
+    return undefined;
+  }
 }
 
 /**
