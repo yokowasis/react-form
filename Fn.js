@@ -532,7 +532,7 @@ export function newDate(datestring, timezone) {
  *
  * @param {string} token
  * @param {Uint8Array} secret
- * @returns
+ * @returns {Promise<undefined | *>}
  */
 async function verifyJWT(token, secret) {
   try {
