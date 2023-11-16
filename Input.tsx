@@ -57,7 +57,11 @@ export default function Input(props: AppProps) {
   }
 
   useEffect(() => {
-    setVal(props.id, props.value || "");
+    if (props.type === "select") {
+      if (props.value) setVal(props.id, props.value);
+    } else {
+      setVal(props.id, props.value || "");
+    }
   }, [props.value]);
 
   return props.type === "text" ||
