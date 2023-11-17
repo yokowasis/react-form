@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { AES, enc } from "crypto-js";
+import { AES, PBKDF2, enc, lib } from "crypto-js";
 import * as jose from "jose";
 
 /**
@@ -31,14 +31,24 @@ export function generateSalt() {
 /**
  *
  * @param {string} password
- * @param {string} salt
+ * @param {string} passPhrase
  */
 export const hashPassword = (
   password,
-  salt = "$2a$10$us4l1evreCGvANr2QiCz8O"
+  passPhrase = "$2a$10$us4l1evreCGvANr2QiCz8O"
 ) => {
-  // const salt = bcrypt.genSaltSync(10);
-  return AES.encrypt(password, salt).toString();
+  const iv = enc.Hex.parse("00000000000000000000000000000000");
+  const salt = /** @type {lib.WordArray} */ ({
+    words: [1943688280, 3743628111, 93051141, 2405835587],
+    sigBytes: 16,
+  });
+  const key = PBKDF2(passPhrase, salt, {
+    keySize: 256 / 32,
+    iterations: 100,
+  });
+  return AES.encrypt(password, key, {
+    iv,
+  }).toString();
 };
 
 export function getToken() {
