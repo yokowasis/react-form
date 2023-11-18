@@ -5,6 +5,8 @@
 
 import { AES, PBKDF2, enc, lib } from "crypto-js";
 import * as jose from "jose";
+// @ts-ignore
+import * as totp from "totp-generator";
 
 /**
  *
@@ -20,6 +22,7 @@ export function getVal(id) {
   switch (elem.dataset.type) {
     default:
       return /** @type {HTMLInputElement} */ (elem).value;
+      // @ts-ignore
       break;
   }
 }
@@ -57,32 +60,9 @@ export const hashPassword = (
  * @returns
  */
 export function getToken(passPhrase = "123123") {
-  // create a function to hash password using salt
-  // import bcrypt
-
-  // get current date and time
-  const now = new Date();
-
-  // set timezone to Central Indonesia Time (UTC+8)
-  now.setUTCHours(now.getUTCHours() + 8);
-
-  // round down to the nearest 15-minute interval
-  const roundedMinutes = Math.floor(now.getUTCMinutes() / 15) * 15;
-  now.setUTCMinutes(roundedMinutes);
-  now.setUTCSeconds(0);
-  now.setUTCMilliseconds(0);
-
-  // print in ISO format
-  const rounded = now.toISOString();
-
-  const hash = hashPassword(rounded, passPhrase);
-
-  // get last 5 characters of hash, and make it uppercase
-  const last5 = hash
-    .slice(-5)
-    .toUpperCase()
-    .replace(/[^A-Z0-9]/g, "X");
-  return last5;
+  return totp(passPhrase.toUpperCase(), {
+    period: 60 * 15,
+  });
 }
 
 /**
@@ -348,6 +328,7 @@ export function rp(
       .join("&");
   }
 
+  // @ts-ignore
   return new Promise((resolve, reject) => {
     fetch(url, {
       method,
@@ -476,8 +457,10 @@ export function createLine(id0, id1, s, parent = "container") {
   const x = Math.sqrt(Math.pow(left2 - left1, 2) + Math.pow(top2 - top1, 2));
 
   // half height
+  // @ts-ignore
   const y = (top2 - top1) / 2;
   // half x
+  // @ts-ignore
   const x2 = x / 2;
 
   //   create line
