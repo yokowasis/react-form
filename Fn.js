@@ -51,7 +51,12 @@ export const hashPassword = (
   }).toString();
 };
 
-export function getToken() {
+/**
+ *
+ * @param {string} passPhrase
+ * @returns
+ */
+export function getToken(passPhrase = "123123") {
   // create a function to hash password using salt
   // import bcrypt
 
@@ -70,10 +75,13 @@ export function getToken() {
   // print in ISO format
   const rounded = now.toISOString();
 
-  const hash = hashPassword(rounded);
+  const hash = hashPassword(rounded, passPhrase);
 
   // get last 5 characters of hash, and make it uppercase
-  const last5 = hash.slice(-5).toUpperCase();
+  const last5 = hash
+    .slice(-5)
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "X");
   return last5;
 }
 
