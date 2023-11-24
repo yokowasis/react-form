@@ -297,7 +297,7 @@ export function convertImgSrcToBase64(htmlString) {
 /**
  *
  * @param {string} url
- * @param {"GET" | "POST" | "PUT" | "DELETE"} method
+ * @param {"GET" | "POST" | "PUT" | "DELETE" | "PATCH"} method
  * @param {*} body
  * @param {string} token
  * @param {"application/json" | "application/x-www-form-urlencoded"} contentType
@@ -594,6 +594,7 @@ function getJWT(req) {
  * @returns
  */
 function parseJwtNode(token) {
+  // eslint-disable-next-line no-undef
   return JSON.parse(Buffer.from(token.split(".")[1], "base64").toString());
 }
 
