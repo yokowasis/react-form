@@ -1,12 +1,12 @@
 // @ts-check
+
+// @ts-nocheck
 /** @typedef {import("next/server").NextRequest} NextRequest */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { AES, PBKDF2, enc, lib } from "crypto-js";
-import * as jose from "jose";
+import jose from "jose";
 // @ts-ignore
-import * as totp from "totp-generator";
+import totp from "totp-generator";
 
 /**
  *
@@ -22,8 +22,6 @@ export function getVal(id) {
   switch (elem.dataset.type) {
     default:
       return /** @type {HTMLInputElement} */ (elem).value;
-      // @ts-ignore
-      break;
   }
 }
 
@@ -613,6 +611,52 @@ function getJWT(req) {
 function parseJwtNode(token) {
   // eslint-disable-next-line no-undef
   return JSON.parse(Buffer.from(token.split(".")[1], "base64").toString());
+}
+
+export class Timeout {
+  constructor() {
+    this.ids = [];
+  }
+
+  /**
+   *
+   * @param {number} delay
+   * @param {*} reason
+   * @returns
+   */
+  set = (delay, reason) =>
+    new Promise((resolve, reject) => {
+      const id = setTimeout(() => {
+        if (reason === undefined) resolve("timeout");
+        else reject(reason);
+        this.clear(id);
+      }, delay);
+      this.ids.push(id);
+    });
+
+  /**
+   *
+   * @param {*} promise
+   * @param {number} delay
+   * @param {*} reason
+   * @returns
+   */
+  wrap = (promise, delay, reason) =>
+    Promise.race([promise, this.set(delay, reason)]);
+
+  /**
+   *
+   * @param  {...any} ids
+   */
+  clear = (...ids) => {
+    this.ids = this.ids.filter((id) => {
+      if (ids.includes(id)) {
+        clearTimeout(id);
+        return false;
+      }
+      return true;
+    });
+  };
 }
 
 export const JWT = {
