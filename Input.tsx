@@ -156,7 +156,11 @@ export default function Input(props: AppProps) {
         <>
           <div
             className={"bg-light w-100 border"}
-            style={{ position: "absolute" }}
+            style={{
+              position: "absolute",
+              maxHeight: 200,
+              overflowY: "scroll",
+            }}
           >
             {filteredData.map((item, i) => (
               <div
