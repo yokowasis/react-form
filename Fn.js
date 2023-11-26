@@ -4,9 +4,9 @@
 /** @typedef {import("next/server").NextRequest} NextRequest */
 
 import { AES, PBKDF2, enc, lib } from "crypto-js";
-import jose from "jose";
+import * as jose from "jose";
 // @ts-ignore
-import totp from "totp-generator";
+import * as totp from "totp-generator";
 
 /**
  *
