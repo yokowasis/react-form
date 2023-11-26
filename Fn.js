@@ -6,7 +6,7 @@
 import { AES, PBKDF2, enc, lib } from "crypto-js";
 import * as jose from "jose";
 // @ts-ignore
-import * as totp from "totp-generator";
+import totp from "totp-generator";
 
 /**
  *
