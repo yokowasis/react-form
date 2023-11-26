@@ -384,6 +384,19 @@ export function randomLightColor() {
   return color;
 }
 
+export function randomDarkColor() {
+  var letters = "0123456789ABCDEF".split("");
+  var color = "#";
+  for (var i = 0; i < 6; i++) {
+    if (i === 0) {
+      color += letters[Math.floor(Math.random() * 6)];
+    } else {
+      color += letters[Math.floor(Math.random() * letters.length)];
+    }
+  }
+  return color;
+}
+
 export function randomDigit(digitCount = 6) {
   let num = Math.floor(Math.random() * 10 ** digitCount);
   return num.toString().padStart(digitCount, "0");
@@ -423,9 +436,10 @@ export async function now() {
  * @param {string} id1
  * @param {string} s
  * @param {string} parent
+ * @param {string} color
  * @returns
  */
-export function createLine(id0, id1, s, parent = "container") {
+export function createLine(id0, id1, s, parent = "container", color = "") {
   // delete previous line
   const prev = document.getElementById(s);
   if (prev) prev.remove();
@@ -470,10 +484,13 @@ export function createLine(id0, id1, s, parent = "container") {
   line.style.width = x + "px";
   line.style.height = "2px";
 
-  //   random color
-  line.style.backgroundColor = `#${Math.floor(
-    Math.random() * 16777215
-  ).toString(16)}`;
+  if (color) {
+    line.style.backgroundColor = color;
+  } else {
+    line.style.backgroundColor = `#${Math.floor(
+      Math.random() * 16777215
+    ).toString(16)}`;
+  }
 
   radio1.style.backgroundColor = line.style.backgroundColor;
   radio1.style.borderColor = line.style.backgroundColor;
