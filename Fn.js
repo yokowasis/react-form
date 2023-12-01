@@ -665,4 +665,5 @@ export const JWT = {
   generateSecret: generateJWTSecret,
   get: getJWT,
   parse: parseJwtNode,
+  parseBrowser: parseJwt,
 };
