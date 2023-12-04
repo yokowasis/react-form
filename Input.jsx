@@ -1,54 +1,51 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useEffect, useState } from "react";
-import { icons } from "./Types";
 import "./Input.scss";
 import I from "./I";
 import { setVal, slugify } from "./Fn";
 import React from "react";
 
-type AppProps = {
-  type:
-    | "text"
-    | "select"
-    | "password"
-    | "checkbox"
-    | "textarea"
-    | "radio"
-    | "time"
-    | "uploadimage"
-    | "number"
-    | "date";
-  id: string;
-  label?: string;
-  labelClass?: string;
-  placeholder?: string;
-  iconAfter?: icons;
-  iconBefore?: icons;
-  checked?: string[];
-  isChecked?: boolean;
-  inline?: boolean;
-  data?: string[];
-  dataLabels?: string[];
-  onPaste?: (e: ClipboardEvent) => void;
-  rows?: number;
-  value?: string;
-  style?: React.CSSProperties;
-  readonly?: boolean;
-  dataShowAll?: boolean;
-  description?: string;
-  mb?: 0 | 1 | 2 | 3 | 4 | 5;
-  onBlur?: (e: any) => void;
-  onChange?: (e: any) => void;
-};
+/**
+ * @typedef AppProps
+ * @type {{
+ *   type: "text"  | "select" | "password" | "checkbox" | "textarea" | "radio" | "time" | "uploadimage" | "number" | "date";
+ *   id: string;
+ *   label?: string;
+ *   labelClass?: string;
+ *   placeholder?: string;
+ *   iconAfter?: import("./Types").icons;
+ *   iconBefore?: import("./Types").icons;
+ *   checked?: string[];
+ *   isChecked?: boolean;
+ *   inline?: boolean;
+ *   data?: string[];
+ *   dataLabels?: string[];
+ *   onPaste?: (e: ClipboardEvent) => void;
+ *   rows?: number;
+ *   value?: string;
+ *   style?: React.CSSProperties;
+ *   readonly?: boolean;
+ *   dataShowAll?: boolean;
+ *   description?: string;
+ *   mb?: 0 | 1 | 2 | 3 | 4 | 5;
+ *   onBlur?: (e: any) => void;
+ *   onChange?: (e: any) => void;
+ * }}
+ */
 
-export default function Input(props: AppProps) {
-  const [filteredData, setFilteredData] = useState<string[]>([]);
+/**
+ *
+ * @param {AppProps} props
+ * @returns
+ */
+export default function Input(props) {
+  const [filteredData, setFilteredData] = useState(
+    /** @type {string[]} */ ([])
+  );
 
   function showPassword() {
-    const input = document.getElementById(props.id) as HTMLInputElement;
+    const input = /** @type {HTMLInputElement} */ (
+      document.getElementById(props.id)
+    );
     if (input.type === "password") {
       input.type = "text";
     } else {
@@ -103,7 +100,7 @@ export default function Input(props: AppProps) {
           onBlur={props.onBlur}
           readOnly={props.readonly}
           onPaste={(e) => {
-            if (props.onPaste) props.onPaste(e as any);
+            if (props.onPaste) props.onPaste(/** @type {*} */ (e));
           }}
           onFocus={() => {
             if (props.dataShowAll) {
@@ -111,8 +108,9 @@ export default function Input(props: AppProps) {
             }
           }}
           onChange={(e) => {
-            const target = e.target as any as { value: string };
-            const val = target.value as string;
+            /** @type {{ value: string }} */
+            const target = /** @type {*} */ (e.target);
+            const val = /** @type {string} */ (target.value);
             setVal(props.id, val);
             if (val === "") {
               if (props.dataShowAll) {
@@ -122,9 +120,11 @@ export default function Input(props: AppProps) {
               }
             } else {
               setFilteredData(
-                props.data?.filter((item) =>
-                  item.toLowerCase().includes(target.value.toLowerCase())
-                ) as string[]
+                /** @type {string[]} */ (
+                  props.data?.filter((item) =>
+                    item.toLowerCase().includes(target.value.toLowerCase())
+                  )
+                )
               );
             }
           }}
@@ -255,7 +255,7 @@ export default function Input(props: AppProps) {
         placeholder={props.placeholder}
         readOnly={props.readonly}
         onPaste={(e) => {
-          if (props.onPaste) props.onPaste(e as any);
+          if (props.onPaste) props.onPaste(/** @type {*} */ (e));
         }}
       >
         {props.value}
@@ -345,7 +345,9 @@ export default function Input(props: AppProps) {
             <button
               className="input-group-text btn-danger btn"
               onClick={() => {
-                const s = document.getElementById(props.id) as HTMLInputElement;
+                const s = /** @type {HTMLInputElement} */ (
+                  document.getElementById(props.id)
+                );
                 s.value = "";
                 setVal(props.id, "");
               }}
@@ -355,9 +357,9 @@ export default function Input(props: AppProps) {
             <button
               className="input-group-text btn-primary btn"
               onClick={() => {
-                const input = document.getElementById(
-                  `${props.id}-selector`
-                ) as HTMLInputElement;
+                const input = /** @type {HTMLInputElement} */ (
+                  document.getElementById(`${props.id}-selector`)
+                );
                 input.click();
               }}
             >
@@ -367,7 +369,8 @@ export default function Input(props: AppProps) {
                 id={`${props.id}-selector`}
                 onChange={async (e) => {
                   setVal(props.id, "Uploading...");
-                  const target = e.target as any as { files: FileList };
+                  /** @type {{ files: FileList }} */
+                  const target = /** @type {*} */ (e.target);
                   if (!target) {
                     setVal(props.id, "");
                     return;
