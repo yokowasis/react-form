@@ -1,5 +1,10 @@
-import { icons } from "./Types";
+import React from "react";
 
-export default function I(props: { c: icons }) {
+/**
+ *
+ * @param {{ c: import("./Types").icons }} props
+ * @returns
+ */
+export default function I(props) {
   return <i className={`bi-${props.c} mr-1`}></i>;
 }
