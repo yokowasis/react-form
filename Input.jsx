@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Input.scss";
 import I from "./I";
-import { setVal, slugify } from "./Fn";
+import { getVal, setVal, slugify } from "./Fn";
 import React from "react";
 
 /**
@@ -25,6 +25,7 @@ import React from "react";
  *   style?: React.CSSProperties;
  *   readonly?: boolean;
  *   dataShowAll?: boolean;
+ *   multiSelect?: boolean;
  *   description?: string;
  *   mb?: 0 | 1 | 2 | 3 | 4 | 5;
  *   onBlur?: (e: any) => void;
@@ -39,7 +40,7 @@ import React from "react";
  */
 export default function Input(props) {
   const [filteredData, setFilteredData] = useState(
-    /** @type {string[]} */ ([])
+    /** @type {string[]} */ ([]),
   );
 
   function showPassword() {
@@ -122,9 +123,9 @@ export default function Input(props) {
               setFilteredData(
                 /** @type {string[]} */ (
                   props.data?.filter((item) =>
-                    item.toLowerCase().includes(target.value.toLowerCase())
+                    item.toLowerCase().includes(target.value.toLowerCase()),
                   )
-                )
+                ),
               );
             }
           }}
@@ -160,13 +161,28 @@ export default function Input(props) {
               position: "absolute",
               maxHeight: 200,
               overflowY: "scroll",
+              zIndex: 999,
             }}
           >
             {filteredData.map((item, i) => (
               <div
                 key={i}
                 onClick={() => {
-                  setVal(props.id, item);
+                  if (props.multiSelect) {
+                    const val = getVal(props.id);
+                    const vals = val.split(",");
+
+                    if (vals.length === 1) {
+                      setVal(props.id, `${item},`);
+                    } else {
+                      //pop the last item
+                      vals.pop();
+                      vals.push(item);
+                      setVal(props.id, vals.join(",") + ",");
+                    }
+                  } else {
+                    setVal(props.id, item);
+                  }
                   setFilteredData([]);
                 }}
                 className={"autoInputChildren p-2"}
@@ -387,7 +403,7 @@ export default function Input(props) {
                       },
                       method: "POST",
                       body: file,
-                    }
+                    },
                   );
                   setVal(props.id, `https://s3.app.web.id/${filename}`);
                 }}
