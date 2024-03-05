@@ -1,0 +1,21 @@
+-- Active: 1707088689543@@host2.bimasoft.web.id@3306@bimasoft_eadmin
+INSERT INTO `Users` 
+(`username`, `password`, `hak_akses`, `nama_sekolah`, `logo_sekolah`, `tagline`, `namespace`) 
+VALUES 
+(
+  'mtsnegeri2lomboktengah@gmail.com', '2b90a54e54a350ee7935c8f346567646e3696f58879f08ee3f5967bfeec6d2bc', 
+  'user', 
+  'MTs NEGERI 2 LOMBOK TENGAH', 
+  'https://i0.wp.com/snipboard.io/Pjg7xo.jpg', 
+  'Aplikasi Ujian', 
+  'MTSN2LOMBOKTENGAH'
+) ON DUPLICATE KEY
+UPDATE 
+  `username` = 'mtsnegeri2lomboktengah@gmail.com',
+  `password` = '2b90a54e54a350ee7935c8f346567646e3696f58879f08ee3f5967bfeec6d2bc',
+  `hak_akses` = 'user',
+  `nama_sekolah` = 'MTs NEGERI 2 LOMBOK TENGAH',
+  `logo_sekolah` = 'https://i0.wp.com/snipboard.io/Pjg7xo.jpg',
+  `tagline` = 'Aplikasi Ujian',
+  `namespace` = 'MTSN2LOMBOKTENGAH'
+;
