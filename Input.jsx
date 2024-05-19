@@ -40,7 +40,7 @@ import React from "react";
  */
 export default function Input(props) {
   const [filteredData, setFilteredData] = useState(
-    /** @type {string[]} */ ([]),
+    /** @type {string[]} */[]),
   );
 
   function showPassword() {
@@ -101,7 +101,7 @@ export default function Input(props) {
           onBlur={props.onBlur}
           readOnly={props.readonly}
           onPaste={(e) => {
-            if (props.onPaste) props.onPaste(/** @type {*} */ (e));
+            if (props.onPaste) props.onPaste(/** @type {*} */e));
           }}
           onFocus={() => {
             if (props.dataShowAll) {
@@ -121,7 +121,7 @@ export default function Input(props) {
               }
             } else {
               setFilteredData(
-                /** @type {string[]} */ (
+                /** @type {string[]} */
                   props.data?.filter((item) =>
                     item.toLowerCase().includes(target.value.toLowerCase()),
                   )
@@ -271,7 +271,7 @@ export default function Input(props) {
         placeholder={props.placeholder}
         readOnly={props.readonly}
         onPaste={(e) => {
-          if (props.onPaste) props.onPaste(/** @type {*} */ (e));
+          if (props.onPaste) props.onPaste(/** @type {*} */e));
         }}
       >
         {props.value}
@@ -395,7 +395,7 @@ export default function Input(props) {
                   const ext = file.name.split(".").pop();
                   const filename = `${props.id}-${Date.now()}.${ext}`;
                   await fetch(
-                    `https://cbtadmin.bimasoft.workers.dev/?cbtindex=1&_=/s3/add&filekey=${filename}`,
+                    `https://admin.cbt.my.id/?cbtindex=1&_=/s3/add&filekey=${filename}`,
                     {
                       headers: {
                         "Content-Type": "application/octet-stream",

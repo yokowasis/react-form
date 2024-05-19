@@ -215,7 +215,7 @@ export function parseJwt(token) {
     window
       .atob(base64)
       .split("")
-      .map(function (c) {
+      .map(function(c) {
         return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
       })
       .join("")
@@ -236,7 +236,7 @@ export async function imgURLtoBase64(url) {
     const reader = new FileReader();
     reader.readAsDataURL(blob);
     reader.onloadend = () => {
-      resolve(/** @type {*} */ (reader).result);
+      resolve(/** @type {*} */(reader).result);
     };
   });
 }
@@ -411,7 +411,7 @@ export function randomAlphaNumeric(length = 10) {
 }
 
 export async function now() {
-  const r = await fetch(`https://bima-global.bimasoft.workers.dev/?_=/now`, {
+  const r = await fetch(`https://globalvar.cbt.my.id/?_=/now`, {
     method: "GET",
     headers: {
       Accept: "application/json",
