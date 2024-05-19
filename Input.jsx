@@ -40,7 +40,7 @@ import React from "react";
  */
 export default function Input(props) {
   const [filteredData, setFilteredData] = useState(
-    /** @type {string[]} */[]),
+    /** @type {string[]} */([]),
   );
 
   function showPassword() {
@@ -103,29 +103,29 @@ export default function Input(props) {
           onPaste={(e) => {
             if (props.onPaste) props.onPaste(/** @type {*} */e));
           }}
-          onFocus={() => {
+        onFocus={() => {
+          if (props.dataShowAll) {
+            setFilteredData(props.data || []);
+          }
+        }}
+        onChange={(e) => {
+          /** @type {{ value: string }} */
+          const target = /** @type {*} */ (e.target);
+          const val = /** @type {string} */ (target.value);
+          setVal(props.id, val);
+          if (val === "") {
             if (props.dataShowAll) {
               setFilteredData(props.data || []);
-            }
-          }}
-          onChange={(e) => {
-            /** @type {{ value: string }} */
-            const target = /** @type {*} */ (e.target);
-            const val = /** @type {string} */ (target.value);
-            setVal(props.id, val);
-            if (val === "") {
-              if (props.dataShowAll) {
-                setFilteredData(props.data || []);
-              } else {
-                setFilteredData([]);
-              }
             } else {
-              setFilteredData(
-                /** @type {string[]} */
-                  props.data?.filter((item) =>
-                    item.toLowerCase().includes(target.value.toLowerCase()),
-                  )
-                ),
+              setFilteredData([]);
+            }
+          } else {
+            setFilteredData(
+              /** @type {string[]} */
+              props.data?.filter((item) =>
+                item.toLowerCase().includes(target.value.toLowerCase()),
+              )
+            ),
               );
             }
           }}
@@ -274,17 +274,19 @@ export default function Input(props) {
           if (props.onPaste) props.onPaste(/** @type {*} */e));
         }}
       >
-        {props.value}
-      </textarea>
-      {props.description ? (
-        <div
-          className="fs-08 mt-1"
-          dangerouslySetInnerHTML={{ __html: props.description }}
-        ></div>
-      ) : (
-        <></>
-      )}
-    </div>
+      {props.value}
+    </textarea>
+      {
+    props.description ? (
+      <div
+        className="fs-08 mt-1"
+        dangerouslySetInnerHTML={{ __html: props.description }}
+      ></div>
+    ) : (
+      <></>
+    )
+  }
+    </div >
   ) : props.type === "checkbox" ? (
     <div className={`mb-${props.mb && props.mb >= 0 ? props.mb : 3}`}>
       {props.label ? (
