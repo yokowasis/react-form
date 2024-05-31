@@ -396,7 +396,7 @@ export default function Input(props) {
                   const ext = file.name.split(".").pop();
                   const filename = `${props.id}-${Date.now()}.${ext}`;
                   await fetch(
-                    `https://admin.cbt.my.id/?cbtindex=1&_=/s3/add&filekey=${filename}`,
+                    `https://admin.cbt.my.id/?cbtindex=1&_=/bunnys3/add&filekey=${filename}`,
                     {
                       headers: {
                         "Content-Type": "application/octet-stream",
@@ -406,7 +406,7 @@ export default function Input(props) {
                       body: file,
                     },
                   );
-                  setVal(props.id, `https://s3.app.web.id/${filename}`);
+                  setVal(props.id, `https://bima-s3.b-cdn.net/${filename}`);
                 }}
               />
               <I c={"upload"} /> <span className="ml-2">Upload</span>
