@@ -40,7 +40,7 @@ import React from "react";
  */
 export default function Input(props) {
   const [filteredData, setFilteredData] = useState(
-    /** @type {string[]} */([]),
+    /** @type {string[]} */ ([]),
   );
 
   function showPassword() {
@@ -101,7 +101,7 @@ export default function Input(props) {
           onBlur={props.onBlur}
           readOnly={props.readonly}
           onPaste={(e) => {
-            if (props.onPaste) props.onPaste(/** @type {*} */(e));
+            if (props.onPaste) props.onPaste(/** @type {*} */ (e));
           }}
           onFocus={() => {
             if (props.dataShowAll) {
@@ -124,8 +124,8 @@ export default function Input(props) {
                 /** @type {string[]} */
                 props.data?.filter((item) =>
                   item.toLowerCase().includes(target.value.toLowerCase()),
-                )
-              )
+                ),
+              );
             }
           }}
         />
@@ -270,22 +270,20 @@ export default function Input(props) {
         placeholder={props.placeholder}
         readOnly={props.readonly}
         onPaste={(e) => {
-          if (props.onPaste) props.onPaste(/** @type {*} */(e));
+          if (props.onPaste) props.onPaste(/** @type {*} */ (e));
         }}
       >
         {props.value}
       </textarea>
-      {
-        props.description ? (
-          <div
-            className="fs-08 mt-1"
-            dangerouslySetInnerHTML={{ __html: props.description }}
-          ></div>
-        ) : (
-          <></>
-        )
-      }
-    </div >
+      {props.description ? (
+        <div
+          className="fs-08 mt-1"
+          dangerouslySetInnerHTML={{ __html: props.description }}
+        ></div>
+      ) : (
+        <></>
+      )}
+    </div>
   ) : props.type === "checkbox" ? (
     <div className={`mb-${props.mb && props.mb >= 0 ? props.mb : 3}`}>
       {props.label ? (
@@ -396,7 +394,7 @@ export default function Input(props) {
                   const ext = file.name.split(".").pop();
                   const filename = `${props.id}-${Date.now()}.${ext}`;
                   await fetch(
-                    `https://admin.cbt.my.id/?cbtindex=1&_=/bunnys3/add&filekey=${filename}`,
+                    `https://admin.bimasoft.web.id/?cbtindex=1&_=/bunnys3/add&filekey=${filename}`,
                     {
                       headers: {
                         "Content-Type": "application/octet-stream",
