@@ -394,7 +394,7 @@ export default function Input(props) {
                   const ext = file.name.split(".").pop();
                   const filename = `${props.id}-${Date.now()}.${ext}`;
                   await fetch(
-                    `https://admin.bimasoft.web.id/?cbtindex=1&_=/bunnys3/add&filekey=${filename}`,
+                    `https://cbtadmin.bimasoft.workers.dev/?cbtindex=1&_=/bunnys3/add&filekey=${filename}`,
                     {
                       headers: {
                         "Content-Type": "application/octet-stream",
