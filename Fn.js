@@ -1,12 +1,9 @@
-// @ts-check
-
-// @ts-nocheck
+// @ts-ignore
 /** @typedef {import("next/server").NextRequest} NextRequest */
 
 import { AES, PBKDF2, enc, lib } from "crypto-js";
 import * as jose from "jose";
-// @ts-ignore
-import totp from "totp-generator";
+import { TOTP } from "totp-generator";
 
 /**
  *
@@ -58,7 +55,7 @@ export const hashPassword = (
  * @returns
  */
 export function getToken(passPhrase = "123123") {
-  return totp(passPhrase.toUpperCase(), {
+  return TOTP.generate(passPhrase.toUpperCase(), {
     period: 60 * 15,
   });
 }

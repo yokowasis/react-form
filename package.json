@@ -1,6 +1,6 @@
 {
   "name": "@yokowasis/react-form",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React form utilities and components by yokowasis",
   "main": "index.js",
   "keywords": [
@@ -20,6 +20,7 @@
     "totp-generator": "^1.0.0"
   },
   "devDependencies": {
-    "@types/crypto-js": "^4.2.2"
+    "@types/crypto-js": "^4.2.2",
+    "@types/node": "^22.14.1"
   }
 }
