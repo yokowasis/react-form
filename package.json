@@ -1,0 +1,17 @@
+{
+  "name": "@yokowasis/react-form",
+  "version": "1.0.0",
+  "description": "React form utilities and components by yokowasis",
+  "main": "index.js",
+  "keywords": [
+    "react",
+    "form",
+    "components"
+  ],
+  "type": "module",
+  "author": "yokowasis",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^17.0.0 || ^18.0.0"
+  }
+}
