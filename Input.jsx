@@ -40,7 +40,7 @@ import React from "react";
  */
 export default function Input(props) {
   const [filteredData, setFilteredData] = useState(
-    /** @type {string[]} */ ([]),
+    /** @type {string[]} */ ([])
   );
 
   function showPassword() {
@@ -123,8 +123,8 @@ export default function Input(props) {
               setFilteredData(
                 /** @type {string[]} */
                 props.data?.filter((item) =>
-                  item.toLowerCase().includes(target.value.toLowerCase()),
-                ),
+                  item.toLowerCase().includes(target.value.toLowerCase())
+                )
               );
             }
           }}
@@ -402,7 +402,7 @@ export default function Input(props) {
                       },
                       method: "POST",
                       body: file,
-                    },
+                    }
                   );
                   setVal(props.id, `https://bima-s3.b-cdn.net/${filename}`);
                 }}
