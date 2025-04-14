@@ -1,53 +1,50 @@
 import { useEffect, useState } from "react";
 import "./Input.scss";
-import I from "./I";
 import { getVal, setVal, slugify } from "./Fn";
-import React from "react";
+import I from "./I";
 
-/**
- * @typedef AppProps
- * @type {{
- *   type: "text"  | "select" | "password" | "checkbox" | "textarea" | "radio" | "time" | "uploadimage" | "number" | "date";
- *   id: string;
- *   label?: string;
- *   labelClass?: string;
- *   placeholder?: string;
- *   iconAfter?: import("./Types").icons;
- *   iconBefore?: import("./Types").icons;
- *   checked?: string[];
- *   isChecked?: boolean;
- *   inline?: boolean;
- *   data?: string[];
- *   dataLabels?: string[];
- *   onPaste?: (e: ClipboardEvent) => void;
- *   rows?: number;
- *   value?: string;
- *   style?: React.CSSProperties;
- *   readonly?: boolean;
- *   dataShowAll?: boolean;
- *   multiSelect?: boolean;
- *   description?: string;
- *   mb?: 0 | 1 | 2 | 3 | 4 | 5;
- *   onBlur?: (e: any) => void;
- *   onChange?: (e: any) => void;
- * }}
- */
+type AppProps = {
+  type:
+    | "text"
+    | "select"
+    | "password"
+    | "checkbox"
+    | "textarea"
+    | "radio"
+    | "time"
+    | "uploadimage"
+    | "number"
+    | "date";
+  id: string;
+  label?: string;
+  labelClass?: string;
+  placeholder?: string;
+  iconAfter?: import("./Types").icons;
+  iconBefore?: import("./Types").icons;
+  checked?: string[];
+  isChecked?: boolean;
+  inline?: boolean;
+  data?: string[];
+  dataLabels?: string[];
+  onPaste?: (e: ClipboardEvent) => void;
+  rows?: number;
+  value?: string;
+  style?: React.CSSProperties;
+  readonly?: boolean;
+  dataShowAll?: boolean;
+  multiSelect?: boolean;
+  description?: string;
+  mb?: 0 | 1 | 2 | 3 | 4 | 5;
+  onBlur?: (e: any) => void;
+  onChange?: (e: any) => void;
+};
 
-/**
- *
- * @param {AppProps} props
- * @returns
- */
-export default function Input(props) {
-  const [filteredData, setFilteredData] = useState(
-    /** @type {string[]} */ ([])
-  );
+export default function Input(props: AppProps) {
+  const [filteredData, setFilteredData] = useState<string[]>([]);
 
   function showPassword() {
-    const input = /** @type {HTMLInputElement} */ (
-      document.getElementById(props.id)
-    );
-    if (input.type === "password") {
+    const input = document.getElementById(props.id) as HTMLInputElement;
+    if (input?.type === "password") {
       input.type = "text";
     } else {
       input.type = "password";
@@ -101,7 +98,8 @@ export default function Input(props) {
           onBlur={props.onBlur}
           readOnly={props.readonly}
           onPaste={(e) => {
-            if (props.onPaste) props.onPaste(/** @type {*} */ (e));
+            const ev = e as unknown as ClipboardEvent;
+            if (props.onPaste) props.onPaste(ev);
           }}
           onFocus={() => {
             if (props.dataShowAll) {
@@ -110,8 +108,8 @@ export default function Input(props) {
           }}
           onChange={(e) => {
             /** @type {{ value: string }} */
-            const target = /** @type {*} */ (e.target);
-            const val = /** @type {string} */ (target.value);
+            const target: { value: string } = e.target;
+            const val = /** @type {string} */ target.value;
             setVal(props.id, val);
             if (val === "") {
               if (props.dataShowAll) {
@@ -121,10 +119,9 @@ export default function Input(props) {
               }
             } else {
               setFilteredData(
-                /** @type {string[]} */
                 props.data?.filter((item) =>
                   item.toLowerCase().includes(target.value.toLowerCase())
-                )
+                ) as string[]
               );
             }
           }}
@@ -269,8 +266,8 @@ export default function Input(props) {
         style={{ ...props.style }}
         placeholder={props.placeholder}
         readOnly={props.readonly}
-        onPaste={(e) => {
-          if (props.onPaste) props.onPaste(/** @type {*} */ (e));
+        onPaste={(e: any) => {
+          if (props.onPaste) props.onPaste(e);
         }}
       >
         {props.value}
@@ -360,9 +357,7 @@ export default function Input(props) {
             <button
               className="input-group-text btn-danger btn"
               onClick={() => {
-                const s = /** @type {HTMLInputElement} */ (
-                  document.getElementById(props.id)
-                );
+                const s = document.getElementById(props.id) as HTMLInputElement;
                 s.value = "";
                 setVal(props.id, "");
               }}
@@ -372,9 +367,9 @@ export default function Input(props) {
             <button
               className="input-group-text btn-primary btn"
               onClick={() => {
-                const input = /** @type {HTMLInputElement} */ (
-                  document.getElementById(`${props.id}-selector`)
-                );
+                const input = document.getElementById(
+                  `${props.id}-selector`
+                ) as HTMLInputElement;
                 input.click();
               }}
             >
@@ -384,8 +379,7 @@ export default function Input(props) {
                 id={`${props.id}-selector`}
                 onChange={async (e) => {
                   setVal(props.id, "Uploading...");
-                  /** @type {{ files: FileList }} */
-                  const target = /** @type {*} */ (e.target);
+                  const target: { files: FileList } = e.target as any;
                   if (!target) {
                     setVal(props.id, "");
                     return;
@@ -447,11 +441,7 @@ export default function Input(props) {
             <></>
           )}
 
-          <select
-            className="form-control"
-            id={props.id}
-            placeholder={props.placeholder}
-          >
+          <select className="form-control" id={props.id}>
             {props.data?.map((item, i) => (
               <option key={item} value={item}>
                 {props.dataLabels?.[i] || item}

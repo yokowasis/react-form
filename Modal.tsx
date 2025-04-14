@@ -1,17 +1,11 @@
-import React from "react";
 import { closeModal } from "./Fn";
 
-/**
- *
- * @param {{
- * id: string;
- * children: React.ReactNode;
- * title: string;
- * confirmFunc?: (closeModal: () => void) => void;
- * }} props
- * @returns
- */
-export default function Modal(props) {
+export default function Modal(props: {
+  id: string;
+  children: React.ReactNode;
+  title: string;
+  confirmFunc?: (closeModal: () => void) => void;
+}) {
   const close = () => {
     closeModal(props.id);
   };
